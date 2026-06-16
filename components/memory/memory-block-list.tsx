@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MemoryBlock } from '@/types/memory-block';
 import { MemoryBlockCard } from './memory-block-card';
 import { generateContext } from '@/lib/context-generator';
@@ -8,7 +8,6 @@ import { ContextPreview } from '../context/context-preview';
 import { ContextEmptyState } from '../context/context-empty-state';
 import { toast } from 'sonner';
 import { optimizeContextAction } from '@/app/dashboard/actions/optimize-context';
-import { ContextLoadingState } from '../context/context-loading-state';
 import { saveGeneratedContext } from '@/app/dashboard/actions/save-generated-context';
 import { Workspace } from '@/types/workspace';
 
@@ -20,11 +19,15 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
   const [copied, setCopied] = useState(false);
   const [optimizing, setOptimizing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [contextTimestamp, setContextTimestamp] = useState<Date | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
 
   function handleGenerate() {
     const selectedBlocks = blocks.filter((block) => selectedIds.has(block.id));
     const context = generateContext(workspace.name, selectedBlocks);
     setGeneratedContext(context);
+    setContextTimestamp(new Date());
+    previewRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
   async function handleOptimize() {
@@ -45,25 +48,29 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
       toast.error('Failed to optimize context');
     } finally {
       setOptimizing(false);
+      setContextTimestamp(new Date());
     }
   }
 
   async function handleSave() {
     try {
-        setSaving(true);
-        const { success, error } = await saveGeneratedContext(workspace.id, generatedContext);
-        if (!success) {
-            toast.error(error);
-            console.error(error);
-            return;
-        };
-        setSaving(false);
-        toast.success("Context saved");
-    } catch (error) {
+      setSaving(true);
+      const { success, error } = await saveGeneratedContext(
+        workspace.id,
+        generatedContext
+      );
+      if (!success) {
+        toast.error(error);
         console.error(error);
-        toast.error("Failed to save context");
+        return;
+      }
+      setSaving(false);
+      toast.success('Context saved');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to save context');
     } finally {
-        setSaving(false);
+      setSaving(false);
     }
   }
 
@@ -109,12 +116,6 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
             disabled={selectedIds.size === 0 || optimizing}>
             Generate Context
           </Button>
-          <Button
-            size='sm'
-            onClick={handleOptimize}
-            disabled={!generatedContext || optimizing}>
-            {optimizing ? 'Optimizing' : 'Optimize with AI'}
-          </Button>
         </div>
       </div>
       <div className='grid gap-4 md:grid-cols-2'>
@@ -127,10 +128,8 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
           />
         ))}
       </div>
-      <div className='mt-8'>
-        {optimizing ? (
-          <ContextLoadingState />
-        ) : generatedContext ? (
+      <div ref={previewRef} className='mt-8 overflow-auto'>
+        {generatedContext ? (
           <ContextPreview
             content={generatedContext}
             onCopy={handleCopy}
@@ -138,6 +137,16 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
             isLoading={optimizing}
             onSave={handleSave}
             saving={saving}
+            selectedCount={selectedIds.size}
+            lastUpdate={contextTimestamp}
+            optimizeBtn={
+              <Button
+                size='sm'
+                onClick={handleOptimize}
+                disabled={!generatedContext || optimizing}>
+                {optimizing ? 'Optimizing' : 'Optimize with AI'}
+              </Button>
+            }
           />
         ) : (
           <ContextEmptyState />

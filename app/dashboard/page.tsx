@@ -7,6 +7,7 @@ import { getWorkspaces } from "@/lib/workspaces";
 import { Workspace } from "@/types/workspace";
 import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
 import { WorkspaceCard } from "@/components/workspace/workspace-card";
+import { OnboardingDialog } from "@/components/workspace/onboarding-dialog";
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -24,7 +25,7 @@ export default async function DashboardPage() {
     return (
         <DashboardShell>
             <div className="space-y-8">
-                <div className="flex justify-between">
+                <div className="flex justify-between items-start">
                     <div>
                         <h1 className="text-3xl font-bold">
                             Workspaces
@@ -32,7 +33,7 @@ export default async function DashboardPage() {
                         <p className="mt-1 text-zinc-500">
                             Organize reusable AI memory.
                         </p>
-                        <CreateWorkspaceDialog />
+                        {workspaces.length !== 0 && <CreateWorkspaceDialog />}
                     </div>
                     <div className="flex items-center">
                         <LogoutButton />
@@ -55,6 +56,7 @@ export default async function DashboardPage() {
                     )
                 }
             </div>
+            <OnboardingDialog />
         </DashboardShell>
     )
 }

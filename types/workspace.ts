@@ -4,4 +4,5 @@ export type Workspace = {
     name: string;
     description: string | null;
     created_at: string;
+    isDemo: boolean;
 }

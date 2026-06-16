@@ -1,10 +1,8 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
-import { error } from "console";
 import { revalidatePath } from "next/cache";
-import { success } from "zod";
 
-export async function createWorkspace(formData:FormData) {
+export async function createWorkspace(formData:FormData, isDemo:boolean=false) {
     const supabase = await createClient();
 
     const {
@@ -26,14 +24,18 @@ export async function createWorkspace(formData:FormData) {
         };
     };
 
-    const { error } = await supabase
+    const { error, data } = await supabase
       .from("workspaces")
       .insert({
         user_id: user.id,
         name,
         description,
-      });
-    
+        is_demo: isDemo
+      })
+      .select()
+      .single();
+
+        
     if (error) {
         return {
             error: error.message,
@@ -44,6 +46,7 @@ export async function createWorkspace(formData:FormData) {
 
     return {
         success: true,
+        data
     };
 };
 

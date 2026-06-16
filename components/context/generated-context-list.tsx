@@ -24,15 +24,6 @@ export function GeneratedContextList({
                     />
                 ))}
             </div>
-            <ViewContextDialog 
-              context={selectedContext}
-              open={!!selectedContext}
-              onOpenChange={(open) => {
-                if (!open) {
-                    setSelectedContext(null);
-                }
-              }}
-            />
         </>
     )
 }

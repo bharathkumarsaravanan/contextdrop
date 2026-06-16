@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getGeneratedContexts } from '@/lib/generated-contexts';
 import { GeneratedContextList } from '@/components/context/generated-context-list';
 import { WorkspaceNav } from '@/components/workspace/workspace-nav';
+import { ContextEmptyState } from '@/components/context/context-empty-state';
 
 type Props = { params: Promise<{ workspaceId: string }> };
 
@@ -26,7 +27,7 @@ export default async function ContextsPage({ params }: Props) {
       </div>
       <div className='mt-12 space-y-4'>
           {generatedContexts.length === 0 ? (
-            <p className='text-sm text-zinc-500'>No saved contexts yet.</p>
+            <ContextEmptyState />
           ) : (
             <GeneratedContextList contexts={generatedContexts} />
           )}

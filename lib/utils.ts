@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { success } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -14,3 +15,16 @@ export function timeAgo(date: Date) {
   if (mins < 60) return `${mins} min${mins > 1 ? 's' : ''} ago`;
   return `${hrs} hr${hrs > 1 ? 's' : ''} ago`;
 }
+
+export async function handleCopy(text:string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return {
+        success: true
+      }
+    } catch {
+      return {
+        success: false
+      }
+    }
+  }

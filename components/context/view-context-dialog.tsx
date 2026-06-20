@@ -25,7 +25,7 @@ export function ViewContextDialog({ context, children }: Props) {
       await navigator.clipboard.writeText(context.content);
       setCopied(true);
       toast.success('Context copied to clipboard');
-      setTimeout(() => {
+      setTimeout(() => { 
         setCopied(false);
       }, 2000);
     } catch {
@@ -35,7 +35,7 @@ export function ViewContextDialog({ context, children }: Props) {
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className='w-100'>{children}</DialogTrigger>
       <DialogContent className='border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur max-w-3xl'>
         <DialogHeader className='border-b border-zinc-700 pb-4'>
           <DialogTitle>{context.name}</DialogTitle>

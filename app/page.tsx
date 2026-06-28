@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { LoginBtn } from "@/components/auth/login-btn";
 
 export default function Home() {
   return (
@@ -37,7 +38,9 @@ export default function Home() {
               </a>
             </div>
 
-            <Button size="sm">Get Started</Button>
+            <LoginBtn>
+              <Button size="sm">Get Started</Button>
+            </LoginBtn>
           </div>
         </div>
       </header>
@@ -57,13 +60,17 @@ export default function Home() {
             seconds.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Button size="lg">Start Free</Button>
-            <Button size="lg" variant="outline">
+            <LoginBtn>
+              <Button size="lg">Start Free</Button>
+            </LoginBtn>
+            <a href="#view-demo" className="p-2 text-sm border rounded">
               View Demo
-            </Button>
+            </a>
           </div>
-
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground mt-10">
+          <p
+            id="view-demo"
+            className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground mt-10"
+          >
             See ContextDrop in Action
           </p>
           <Image
@@ -211,9 +218,11 @@ export default function Home() {
             you need it.
           </p>
           <div className="mt-8">
-            <Button size="lg" variant="outline">
-              Start Free
-            </Button>
+            <LoginBtn>
+              <Button size="lg" variant="outline">
+                Start Free
+              </Button>
+            </LoginBtn>
           </div>
         </div>
       </section>

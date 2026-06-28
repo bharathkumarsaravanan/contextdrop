@@ -24,7 +24,6 @@ export function DeleteMemoryDialog({ children, memoryId, workspaceId }: Props) {
     setLoading(true);
 
     const result = await deleteMemory(workspaceId, memoryId);
-
     if (result?.error) {
       toast.error(result.error);
       setLoading(false);

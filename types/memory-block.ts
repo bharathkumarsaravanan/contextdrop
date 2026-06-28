@@ -1,6 +1,6 @@
 export type MemoryBlock = {
     id: string;
-    worspace_id: string;
+    workspace_id: string;
     title: string;
     content: string;
     category: string;

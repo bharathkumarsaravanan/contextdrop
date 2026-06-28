@@ -1,18 +1,8 @@
 import { createWorkspace } from "@/app/dashboard/actions";
 import { createMemoryBlock } from "@/app/dashboard/workspaces/[workspaceId]/actions";
-import { error } from "console";
+import { Workspace } from "@/types/workspace";
 
-export async function createDemoWorkspace() {
-    const workspaceData = new FormData();
-    workspaceData.set("name", "My SaaS Startup");
-    workspaceData.set("description", "Demo workspace.")
-    try {
-        const {error, data} = await createWorkspace(workspaceData);
-        if (error) {
-            throw new Error(error)
-        }
-
-        const memoryDatas = [
+const memoryDatas = [
             {
                 title: "Product Vision",
                 content: `ContextDrop helps developers
@@ -44,24 +34,51 @@ Sharing`,
                 category: "Development"
             },
 
-        ]
-        const {id} = data;
+        ];
+
+export async function createDemoWorkspace() {
+    const workspaceData = new FormData();
+    workspaceData.set("name", "My SaaS Startup");
+    workspaceData.set("description", "Demo workspace.");
+    try {
+        const { error, data } = await createWorkspace(workspaceData, true);
+        if (error) {
+            throw new Error(error)
+        }
+
+        return {
+            success: true,
+            data
+        }
+    } catch (err) {
+        return {
+            success: false,
+            error: "Unable to create a demo workspace."
+        }
+    }   
+}
+
+export async function createDemoMemories(workspaceData: Workspace) {
+    const { id } = workspaceData;
+    try {
         memoryDatas.forEach(async (memoryData) => {
             const memory = new FormData();
             memory.set("title", memoryData.title);
             memory.set("content", memoryData.content);
             memory.set("category", memoryData.category);
-            const { error:memoryEr } = await createMemoryBlock(id, memory);
+            const { error } = await createMemoryBlock(id, memory);
             
-            if (memoryEr) {
-                throw new Error(memoryEr);
+            if (error) {
+                throw new Error(error);
             }
         })
-
+        return {
+            success: true
+        }
     } catch (err) {
         return {
-            error: err
+            success: false,
+            error: "Unable to create a demo memories, open the demo workspace and follow the instructions to create memories"
         }
     }
-
 }

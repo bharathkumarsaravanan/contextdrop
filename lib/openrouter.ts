@@ -1,16 +1,16 @@
 import { CONTEXT_OPTIMIZER_PROMPT } from './prompts';
 
 export async function optimizeContext(rawContent: string) {
-  console.log('Model:', process.env.OPENROUTER_MODEL);
+  // console.log('Model:', process.env.OPENROUTER_MODEL);
 
-  console.log('Has API Key:', !!process.env.OPENROUTER_API_KEY);
-  const emptyPromise = new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve(CONTEXT_OPTIMIZER_PROMPT);
-                        }, 2000);
-    });
+  // console.log('Has API Key:', !!process.env.OPENROUTER_API_KEY);
+  // const emptyPromise = new Promise((resolve) => {
+  //                       setTimeout(() => {
+  //                           resolve(CONTEXT_OPTIMIZER_PROMPT);
+  //                       }, 2000);
+  //   });
 
-    return emptyPromise;
+  //   return emptyPromise;
 
   const response = await fetch(
     'https://openrouter.ai/api/v1/chat/completions',

@@ -35,7 +35,7 @@ export function MemoryActions({ memoryData }: Props) {
           </DropdownMenuItem>
         </EditMemoryDialog>
         <DeleteMemoryDialog
-          workspaceId={memoryData.worspace_id}
+          workspaceId={memoryData.workspace_id}
           memoryId={memoryData.id}>
           <DropdownMenuItem
             onSelect={(e) => e.preventDefault()}

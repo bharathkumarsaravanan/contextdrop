@@ -4,7 +4,6 @@ import { optimizeContext } from "@/lib/openrouter";
 export async function optimizeContextAction(context:string) {
     try {
         const optimized = await optimizeContext(context);
-        console.log("Optimized", optimized);
         return {
             success: true,
             data: optimized ?? "",

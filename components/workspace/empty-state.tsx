@@ -2,6 +2,7 @@ import { CreateWorkspaceDialog } from "./create-workspace-dialog";
 import { Button } from "../ui/button";
 import { Plus } from 'lucide-react';
 import { createDemoWorkspace } from "@/lib/demo-seed";
+import { DemoOnboardingDialog } from "../onboarding/demo-onboarding-dialog";
 
 export function EmptyState() {
   return (
@@ -18,11 +19,13 @@ export function EmptyState() {
         <CreateWorkspaceDialog />
       </div>
       <div className="mt-1">
-        <Button onClick={createDemoWorkspace} className='h-11 rounded-xl border border-zinc-800/80 bg-zinc-900 px-5 text-white hover:bg-zinc-800/80 mt-5'>
-          <Plus className='mr-2 h-4 w-4' />
-          Explore Demo Workspace
-        </Button>
+        <DemoOnboardingDialog>
+          <Button className='h-11 rounded-xl border border-zinc-800/80 bg-zinc-900 px-5 text-white hover:bg-zinc-800/80 mt-5'>
+            <Plus className='mr-2 h-4 w-4' />
+            Explore Demo Workspace
+          </Button>
+        </DemoOnboardingDialog>
       </div>
     </div>
   );
-}
+} 

@@ -40,7 +40,6 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
         console.error(error);
         return;
       }
-      console.log(data);
       setGeneratedContext(data);
       toast.success('Context has optimized with AI');
     } catch (error) {

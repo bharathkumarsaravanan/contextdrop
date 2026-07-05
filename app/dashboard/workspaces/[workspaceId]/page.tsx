@@ -27,6 +27,25 @@ export default async function WorkspacePage({ params }: Props) {
 
   const memoryBlocks = await getMemoryBlocks(workspaceId);
 
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  let remainingOptimizations = 10;
+
+  if (user) {
+    const { data: usage } = await supabase
+      .from("ai_usage")
+      .select("optimization_count")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    remainingOptimizations = Math.max(
+      10 - (usage?.optimization_count ?? 0),
+      0
+    );
+  } 
+
   return (
     <DashboardShell>
       <div className='space-y-3'>
@@ -54,6 +73,7 @@ export default async function WorkspacePage({ params }: Props) {
           <MemoryBlockList
             workspace={workspace}
             blocks={memoryBlocks}
+            initialRemainingOptimizations={remainingOptimizations}
           />
         )}
       </div>

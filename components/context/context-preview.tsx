@@ -11,6 +11,7 @@ type Props = {
   selectedCount?: number;
   lastUpdate: Date | null;
   optimizeBtn: React.ReactElement;
+  remainingOptimizations: number | null;
 };
 
 export function ContextPreview({
@@ -22,7 +23,8 @@ export function ContextPreview({
   selectedCount,
   lastUpdate,
   optimizeBtn,
-  isLoading
+  isLoading,
+  remainingOptimizations
 }: Props) {
   const wordCount = content
     .trim()
@@ -55,14 +57,14 @@ export function ContextPreview({
       </div>
       <div className='flex justify-between items-start p-4'>
         <p className='text-sm text-zinc-500'>
-          Generated from {selectedCount} memories
+          Generated from {selectedCount} {(selectedCount && selectedCount > 1) ? "memories" : "memory"}
           <br />
           Ready to paste into ChatGPT, Claude, Gemini, etc.
         </p>
         <div className='flex gap-2 text-xs text-zinc-500'>
+          <span>{remainingOptimizations} AI {remainingOptimizations && remainingOptimizations > 1 ? "optimizations" : "optimization"} left</span>
           <span>Words: {wordCount}</span>
           <span>Characters: {charCountNoSpaces}</span>
-          <span>Memories: {selectedCount}</span>
         </div>
       </div>
       {isLoading ? (

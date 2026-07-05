@@ -11,9 +11,9 @@ import { optimizeContextAction } from '@/app/dashboard/actions/optimize-context'
 import { saveGeneratedContext } from '@/app/dashboard/actions/save-generated-context';
 import { Workspace } from '@/types/workspace';
 
-type Props = { blocks: MemoryBlock[]; workspace: Workspace };
+type Props = { blocks: MemoryBlock[]; workspace: Workspace, initialRemainingOptimizations: number };
 
-export function MemoryBlockList({ blocks, workspace }: Props) {
+export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizations }: Props) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [generatedContext, setGeneratedContext] = useState('');
   const [copied, setCopied] = useState(false);
@@ -21,6 +21,7 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
   const [saving, setSaving] = useState(false);
   const [contextTimestamp, setContextTimestamp] = useState<Date | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
+  const [remainingOptimizations, setRemainingOptimizations] = useState<number|null>(initialRemainingOptimizations);
 
   function handleGenerate() {
     const selectedBlocks = blocks.filter((block) => selectedIds.has(block.id));
@@ -33,7 +34,7 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
   async function handleOptimize() {
     try {
       setOptimizing(true);
-      const { success, data, error } =
+      const { success, data, error, remaining } =
         await optimizeContextAction(generatedContext);
       if (!success) {
         toast.error(error);
@@ -41,7 +42,12 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
         return;
       }
       setGeneratedContext(data);
-      toast.success('Context has optimized with AI');
+
+      if (typeof remaining === 'number') {
+        setRemainingOptimizations(remaining);
+      }
+
+      toast.success('Context optimized with AI');
     } catch (error) {
       console.error(error);
       toast.error('Failed to optimize context');
@@ -138,6 +144,7 @@ export function MemoryBlockList({ blocks, workspace }: Props) {
             saving={saving}
             selectedCount={selectedIds.size}
             lastUpdate={contextTimestamp}
+            remainingOptimizations={remainingOptimizations}
             optimizeBtn={
               <Button
                 size='sm'

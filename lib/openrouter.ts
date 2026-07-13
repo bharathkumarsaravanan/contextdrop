@@ -1,6 +1,11 @@
 import { CONTEXT_OPTIMIZER_PROMPT } from './prompts';
 
-export async function optimizeContext(rawContent: string) {
+type Props = {
+  rawContent: string;
+  apiKey: string;
+}
+
+export async function optimizeContext({rawContent, apiKey}: Props) {
   // console.log('Model:', process.env.OPENROUTER_MODEL);
 
   // console.log('Has API Key:', !!process.env.OPENROUTER_API_KEY);
@@ -17,7 +22,7 @@ export async function optimizeContext(rawContent: string) {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

@@ -1,8 +1,7 @@
 "use server";
 import { optimizeContext } from "@/lib/openrouter";
 import { createClient } from "@/lib/supabase/server";
-import { error } from "console";
-import { success } from "zod";
+import { decryptValue } from "@/lib/encryption";
 
 export async function optimizeContextAction(context:string) {
     try {
@@ -13,36 +12,74 @@ export async function optimizeContextAction(context:string) {
 
         if (!user) {
             return {
+                success: false,
                 error: "Unauthorized"
             }
         }
 
-        const { data: usageData, error: usageError } = await supabase.rpc("consume_free_optimization");
+        let openRouterKey:string;
 
-        if (usageError) {
-            console.error("Usage error:", usageError);
-
+        const { data: credential, error } = await supabase
+          .from("user_api_credentials")
+          .select("encrypted_api_key, iv, auth_tag")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        
+        if (error) {
+            console.error(error);
             return {
-                success: false,
-                error: "Failed to check AI usage"
+                success:false,
+                error:"Failed to load API credentials"
             }
         }
 
-        const usage = usageData?.[0];
+        let remainingOptimizations: number | undefined;
 
-        if(!usage?.allowed) {
-            return {
-                success: false,
-                error: "FREE LIMIT REACHED",
-                remaining: 0
+        if (credential) {
+            try  {
+                openRouterKey = decryptValue({encryptedValue: credential.encrypted_api_key, iv: credential.iv, authTag:credential.auth_tag})
+            } catch {
+                return {
+                    success: false,
+                    error: "Stored OpenRouter key is invalid. Please reconnect it."
+                }
             }
+        } else {
+            const { data: usageData, error: usageError } = await supabase.rpc("consume_free_optimization");
+            
+            if (usageError) {
+                console.error("Usage error:", usageError);
+                
+                return {
+                    success: false,
+                    error: "Failed to check AI usage"
+                }
+            }
+            
+            const usage = usageData?.[0];
+            
+            if(!usage?.allowed) {
+                return {
+                    success: false,
+                    error: "You've used all included AI optimizations. Connect your OpenRouter API key to continue.",
+                    remaining: 0
+                }
+            }  
+            
+            remainingOptimizations = usage.remaining;
+            if (!process.env.OPENROUTER_API_KEY) {
+                throw new Error("OPENROUTER_API_KEY is not configured");
+            }
+            openRouterKey = process.env.OPENROUTER_API_KEY!;
         }
 
-        const optimized = await optimizeContext(context);
+        const optimized = await optimizeContext({rawContent: context, apiKey: openRouterKey});
+
         return {
             success: true,
             data: optimized ?? "",
-            remaining: usage.remaining
+            remaining: remainingOptimizations,
+            usingOwnKey: !!credential,
         }
     } catch (error) {
         console.error(error);

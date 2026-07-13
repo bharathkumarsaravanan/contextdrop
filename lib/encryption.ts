@@ -25,7 +25,7 @@ export type EncryptedValue = {
     authTag: string;
 };
 
-export function encryptedValue(value: string) : EncryptedValue {
+export function encryptValue(value: string) : EncryptedValue {
     const key =getEncryptionKey();
     const iv = crypto.randomBytes(12);
 

@@ -17,6 +17,7 @@ export default async function ConfigPage() {
   } = await supabase.auth.getUser();
 
   let hasApiKey = false;
+  let remainingOptimizations = 10;
 
   if (user) {
     const { data } = await supabase
@@ -25,8 +26,19 @@ export default async function ConfigPage() {
       .eq('user_id', user.id)
       .maybeSingle();
 
+    const { data: usage } = await supabase
+      .from("ai_usage")
+      .select("optimization_count")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    remainingOptimizations = Math.max(
+      10 - (usage?.optimization_count ?? 0),
+      0
+    );
+
     hasApiKey = !!data;
-  }
+  } 
 
   return (
     <DashboardShell>
@@ -49,7 +61,7 @@ export default async function ConfigPage() {
                   for AI tools.
                 </CardDescription>
               </div>
-              <Badge variant='secondary'>Free plan</Badge>
+              {/* <Badge variant='secondary'>Free plan</Badge> */}
             </div>
           </CardHeader>
 
@@ -66,18 +78,19 @@ export default async function ConfigPage() {
                     optimizations.
                   </p>
                 </div>
-                <Badge variant='outline'>10 included</Badge>
+                <Badge variant='secondary'>{remainingOptimizations} remaining</Badge>
               </div>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Use your own API key</CardTitle>
+            <CardTitle>OpenRouter API Key</CardTitle>
 
             <CardDescription>
-              Connect your OpenRouter API key to continue using AI optimization
-              after your free usage is exhausted.
+             Connect your own OpenRouter API key
+            to continue AI optimization after
+            your included free usage ends.
             </CardDescription>
           </CardHeader>
 

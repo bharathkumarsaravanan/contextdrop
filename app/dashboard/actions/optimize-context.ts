@@ -26,7 +26,6 @@ export async function optimizeContextAction(context:string) {
           .maybeSingle();
         
         if (error) {
-            console.error(error);
             return {
                 success:false,
                 error:"Failed to load API credentials"
@@ -38,6 +37,7 @@ export async function optimizeContextAction(context:string) {
         if (credential) {
             try  {
                 openRouterKey = decryptValue({encryptedValue: credential.encrypted_api_key, iv: credential.iv, authTag:credential.auth_tag})
+                console.log("openrouterkey", openRouterKey);
             } catch {
                 return {
                     success: false,
@@ -73,17 +73,36 @@ export async function optimizeContextAction(context:string) {
             openRouterKey = process.env.OPENROUTER_API_KEY!;
         }
 
-        const optimized = await optimizeContext({rawContent: context, apiKey: openRouterKey});
-
-        return {
-            success: true,
-            data: optimized ?? "",
-            remaining: remainingOptimizations,
-            usingOwnKey: !!credential,
-        }
+        try {
+            const optimized = await optimizeContext({rawContent: context, apiKey: openRouterKey});
+            
+            return {
+                success: true,
+                data: optimized ?? "",
+                remaining: remainingOptimizations,
+                usingOwnKey: !!credential,
+            }
+        } catch (error) {
+            const message = error instanceof Error
+                ? error.message
+                : "Unknown error";
+            if (   
+                credential &&
+                (
+                    message.includes("auth") ||
+                    message.includes("API key") ||
+                    message.includes("Unauthorized") ||
+                    message.includes("Authentication header")
+                )
+            ) {
+                return {
+                    success: false,
+                    error: "Your OpenRouter API key is invalid. Please reconnect it from AI Settings."
+                }
+            }
+        } 
     } catch (error) {
         console.error(error);
-
         return {
             success: false,
             error: "Failed to optimize context"

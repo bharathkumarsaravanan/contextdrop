@@ -36,11 +36,14 @@ export async function optimizeContext({rawContent, apiKey}: Props) {
   );
 
   if (!response.ok) {
-    const errorBody = await response.text();
+    const errorBody = await response.json();
 
     console.error('OpenRouter Error:', errorBody);
 
-    throw new Error(errorBody);
+    throw new Error(
+      errorBody?.error?.message ??
+      "OpenRouter request failed."
+    );
   }
 
   const result = await response.json();

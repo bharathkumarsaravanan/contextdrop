@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input';
 import { saveOpenRouterKey } from '@/app/dashboard/actions/save-openrouter-key';
 import { toast } from 'sonner';
 import { CircleCheckBig } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { removeOpenRouterKey } from '../actions/remove-openrouter-key';
+
 
 type Props = { hasKey: boolean };
 
@@ -13,6 +16,9 @@ export function ApiKeyForm({ hasKey }: Props) {
   const [apikey, setApikey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const router = useRouter();
 
   async function handleSave() {
     try {
@@ -25,19 +31,43 @@ export function ApiKeyForm({ hasKey }: Props) {
         return;
       }
 
-      toast.success('OpenRouter connected successfully.');
+      toast.success(
+        hasKey
+        ? "API key replaced"
+        : "OpenRouter connected successfully.");
 
-      setApikey('');
+      setApikey("");
+      setIsEditing(false);
+      router.refresh();
     } catch (error) {
       console.error(error);
 
-      toast.error('Failed to save API key.');
+      toast.error("Failed to save API key.");
     } finally {
       setSaving(false);
     }
   }
 
-  if (hasKey) {
+  async function handleRemoveKey() {
+    try {
+      setRemoving(true);
+      const { success, error } = await removeOpenRouterKey();
+
+      if (!success) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success("OpenRouter API key removed.");
+      router.refresh();
+    } catch {
+      toast.error("Failed to remove API key.")
+    } finally {
+      setRemoving(false);
+    }
+  }
+
+  if (hasKey && !isEditing) {
     return (
       <div className='space-y-4 mt-4'>
         <div className='rounded-lg border p-4'>
@@ -57,8 +87,8 @@ export function ApiKeyForm({ hasKey }: Props) {
           
         </div>
         <div className="flex gap-3 mt-6">
-            <Button variant="outline">Replace API Key</Button>
-            <Button variant="destructive">Remove API Key</Button>
+            <Button variant="outline" onClick={() => setIsEditing(true)}>Replace API Key</Button>
+            <Button variant="destructive" disabled={removing} onClick={handleRemoveKey}>{removing? "Removing..." : "Remove API Key"}</Button>
         </div>
       </div>
     );
@@ -91,7 +121,20 @@ export function ApiKeyForm({ hasKey }: Props) {
       <Button
         onClick={handleSave}
         disabled={!apikey.trim() || saving}>
-        {saving ? 'Connecting...' : 'Connect OpenRouter'}
+        {saving 
+          ? "Connecting"
+          : hasKey
+          ? "Replace API Key" 
+          : "Connect OpenRouter" }
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={() => {
+          setApikey("")
+          setIsEditing(false)
+        }}
+      >
+        Cancel
       </Button>
     </div>
   );

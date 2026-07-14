@@ -41,6 +41,9 @@ export async function saveOpenRouterKey(
 
             auth_tag:
             encrypted.authTag,
+        },
+        {
+            onConflict: "user_id",
         });
     if (error) {
         return {

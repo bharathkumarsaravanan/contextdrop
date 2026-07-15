@@ -10,6 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { LoginBtn } from "@/components/auth/login-btn";
+import Link from "next/link";
+
+export const metadata = {
+  title: "ContextDrop",
+};
 
 export default function Home() {
   return (
@@ -63,12 +68,13 @@ export default function Home() {
             <LoginBtn>
               <Button size="lg">Start Free</Button>
             </LoginBtn>
-            <a href="#view-demo" className="p-2 text-sm border rounded">
-              View Demo
-            </a>
+            <Button variant="outline" asChild>
+              <Link href="/demo">
+                  View Demo
+              </Link>
+          </Button>
           </div>
           <p
-            id="view-demo"
             className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground mt-10"
           >
             See ContextDrop in Action

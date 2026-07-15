@@ -6,9 +6,7 @@ type Props = {
 }
 
 export async function optimizeContext({rawContent, apiKey}: Props) {
-  // console.log('Model:', process.env.OPENROUTER_MODEL);
 
-  // console.log('Has API Key:', !!process.env.OPENROUTER_API_KEY);
   // const emptyPromise = new Promise((resolve) => {
   //                       setTimeout(() => {
   //                           resolve(CONTEXT_OPTIMIZER_PROMPT);
@@ -47,17 +45,9 @@ export async function optimizeContext({rawContent, apiKey}: Props) {
   }
 
   const result = await response.json();
-  console.log('OpenRouter response', JSON.stringify(result, null, 2));
 
   const content = result?.choices?.[0]?.message?.content;
-  console.log({
-    promptTokens: result.usage?.prompt_tokens,
-    completionTokens: result.usage?.completion_tokens,
-    totalTokens: result.usage?.total_tokens,
-    cost: result.usage?.cost
-  });
 
-  console.log('CONTENT:', content);
 
   return content ?? '';
 }

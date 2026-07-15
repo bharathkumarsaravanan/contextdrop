@@ -11,8 +11,6 @@ export async function handleShareContext(contextId: string, workspaceId: string)
         .eq("id", contextId)
         .single();
 
-    console.log(contextData, "contest");
-
     if (fetchError) {
         console.error("Error fetching context:", fetchError);
         return {

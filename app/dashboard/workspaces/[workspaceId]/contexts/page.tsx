@@ -6,6 +6,10 @@ import { ContextEmptyState } from '@/components/context/context-empty-state';
 
 type Props = { params: Promise<{ workspaceId: string }> };
 
+export const metadata = {
+  title: "Shared Context",
+};
+
 export default async function ContextsPage({ params }: Props) {
   const { workspaceId } = await params;
   const generatedContexts = await getGeneratedContexts(workspaceId);

@@ -37,7 +37,6 @@ export async function optimizeContextAction(context:string) {
         if (credential) {
             try  {
                 openRouterKey = decryptValue({encryptedValue: credential.encrypted_api_key, iv: credential.iv, authTag:credential.auth_tag})
-                console.log("openrouterkey", openRouterKey);
             } catch {
                 return {
                     success: false,

@@ -10,6 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { ApiKeyForm } from './api-key-form';
 import { createClient } from '@/lib/supabase/server';
 
+export const metadata = {
+  title: "AI Settings",
+};
+
 export default async function ConfigPage() {
   const supabase = await createClient();
   const {

@@ -21,7 +21,7 @@ export function EditMemoryDialog({ children, memoryData }: Props) {
 
   async function handleSubmit(formData:FormData) {
     setLoading(true);
-    const result = await updateMemory(memoryData.worspace_id, memoryData.id, formData);
+    const result = await updateMemory(memoryData.workspace_id, memoryData.id, formData);
     if (result?.error) {
             toast.error(result.error);
             setLoading(false);

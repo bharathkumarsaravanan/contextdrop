@@ -9,6 +9,10 @@ import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-d
 import { WorkspaceCard } from "@/components/workspace/workspace-card";
 import { OnboardingDialog } from "@/components/workspace/onboarding-dialog";
 
+export const metadata = {
+  title: "Dashboard",
+};
+
 export default async function DashboardPage() {
     const supabase = await createClient();
 

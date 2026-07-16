@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { MoreHorizontal, Trash2, Pencil } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteWorkspace } from "@/app/dashboard/actions";

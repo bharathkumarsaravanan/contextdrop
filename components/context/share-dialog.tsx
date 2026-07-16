@@ -33,7 +33,7 @@ export function ShareContextDialog({ context, children }: Props) {
       success,
       url = null,
       error,
-    } = await handleShareContext(context.id, context.workspace_id);
+    } = await handleShareContext(context.id);
     if (success) {
       setUrl(url);
       handleCopy(url || "");

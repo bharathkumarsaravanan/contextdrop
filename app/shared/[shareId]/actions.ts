@@ -1,7 +1,7 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function handleShareContext(contextId: string, workspaceId: string) {
+export async function handleShareContext(contextId: string) {
     const supabase = await createClient();
 
     // Fetch the context data

@@ -1,7 +1,6 @@
 import { CreateWorkspaceDialog } from "./create-workspace-dialog";
 import { Button } from "../ui/button";
 import { Plus } from 'lucide-react';
-import { createDemoWorkspace } from "@/lib/demo-seed";
 import { DemoOnboardingDialog } from "../onboarding/demo-onboarding-dialog";
 
 export function EmptyState() {

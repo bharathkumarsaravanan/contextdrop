@@ -3,12 +3,10 @@ import { ContextActions } from "./context-actions";
 
 type Props = {
     context: GeneratedContext;
-    onClick: (context: GeneratedContext) => void;
 };
 
 export function GeneratedContextCard({
     context,
-    onClick
 }: Props) {
 
     return (

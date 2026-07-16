@@ -24,7 +24,7 @@ export default function DemoPage() {
 
               <div>
                 <h2 className="font-semibold text-lg">
-                  You're viewing the interactive demo
+                  You are viewing the interactive demo
                 </h2>
 
                 <p className="mt-1 text-sm text-muted-foreground">

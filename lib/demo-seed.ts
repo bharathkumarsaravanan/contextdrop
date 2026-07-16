@@ -50,7 +50,7 @@ export async function createDemoWorkspace() {
             success: true,
             data
         }
-    } catch (err) {
+    } catch {
         return {
             success: false,
             error: "Unable to create a demo workspace."
@@ -75,7 +75,7 @@ export async function createDemoMemories(workspaceData: Workspace) {
         return {
             success: true
         }
-    } catch (err) {
+    } catch {
         return {
             success: false,
             error: "Unable to create a demo memories, open the demo workspace and follow the instructions to create memories"

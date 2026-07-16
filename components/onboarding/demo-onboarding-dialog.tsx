@@ -60,7 +60,7 @@ export function DemoOnboardingDialog({ children }: Props) {
         }));
         return;
     }
-    setProcess(prev => ({
+    setProcess(() => ({
         workspace: "done",
         memories: "loading"
     }));

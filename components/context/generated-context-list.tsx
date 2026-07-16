@@ -1,8 +1,6 @@
 "use client";
-import { useState } from "react";
 import { GeneratedContext } from "@/types/generated-context";
 import { GeneratedContextCard } from "./generated-context-card";
-import { ViewContextDialog } from "./view-context-dialog";
 
 type Props = {
     contexts: GeneratedContext[];
@@ -11,7 +9,6 @@ type Props = {
 export function GeneratedContextList({
     contexts
 }: Props) {
-    const [selectedContext, setSelectedContext] = useState<GeneratedContext | null>(null);
 
     return (
         <>
@@ -20,7 +17,6 @@ export function GeneratedContextList({
                     <GeneratedContextCard 
                       key={context.id}
                       context={context}
-                      onClick={setSelectedContext}
                     />
                 ))}
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,12 +11,12 @@ import {
 import { Button } from "../ui/button";
 
 export function OnboardingDialog() {
-    const [showOnboarding, setShowOnboarding] = useState(false);
-
-    useEffect(() => {
-        const hasSeenOnboarding:string | null =localStorage.getItem("contextdrop-onboarding");
-        setShowOnboarding(hasSeenOnboarding !== "true");
-    }, []);
+    const [showOnboarding, setShowOnboarding] = useState(() => {
+      if (typeof window === "undefined") {
+        return false;
+      }
+      return localStorage.getItem("contextdrop-onboarding") !== "true";
+    });
 
     if (!showOnboarding) return null;
 
@@ -45,7 +45,7 @@ export function OnboardingDialog() {
             <div>6. Paste into ChatGPT, Claude, or Cursor</div>
           </div>
 
-          <Button
+          <Button 
             className="h-11 w-full rounded-xl bg-zinc-100 text-black hover:bg-white"
             onClick={onDismiss}
             >Got it</Button>

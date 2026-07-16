@@ -15,7 +15,7 @@ export function MemoryEmptyState({
 
       <p className="mt-2 max-w-sm text-sm text-zinc-500">
         Memories are reusable chunks of information
-        you'll later combine into AI-ready context.
+        you will later combine into AI-ready context.
       </p>
       
       <ul className="mt-4 list-disc">

@@ -99,6 +99,10 @@ export async function optimizeContextAction(context:string) {
                     error: "Your OpenRouter API key is invalid. Please reconnect it from AI Settings."
                 }
             }
+            return {
+                success: false,
+                error: message,
+            };
         } 
     } catch (error) {
         console.error(error);

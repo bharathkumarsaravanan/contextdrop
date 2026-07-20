@@ -26,7 +26,7 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://contextdrop.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://contextdrop.vercel.app"),
 
   title: {
     default: "ContextDrop",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     description:
       "Save project knowledge once. Generate AI-ready context for ChatGPT, Claude, Gemini and Cursor.",
 
-    url: "https://contextdrop.vercel.app",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "https://contextdrop.vercel.app",
 
     siteName: "ContextDrop",
 

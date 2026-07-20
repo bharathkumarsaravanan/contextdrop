@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { encryptValue } from "@/lib/encryption";
+import { encryptValue } from "@/lib/ai/encryption";
 
 
 export async function saveOpenRouterKey(

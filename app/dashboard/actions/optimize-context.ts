@@ -1,7 +1,7 @@
 "use server";
-import { optimizeContext } from "@/lib/openrouter";
+import { optimizeContext } from "@/lib/ai/openrouter";
 import { createClient } from "@/lib/supabase/server";
-import { decryptValue } from "@/lib/encryption";
+import { decryptValue } from "@/lib/ai/encryption";
 
 export async function optimizeContextAction(context:string) {
     try {
@@ -26,6 +26,7 @@ export async function optimizeContextAction(context:string) {
           .maybeSingle();
         
         if (error) {
+            console.error(error);
             return {
                 success:false,
                 error:"Failed to load API credentials"

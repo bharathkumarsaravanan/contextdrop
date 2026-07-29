@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import PostHogProvider from "@/components/analytics/posthog-provider";
 
 const inter = Inter({
   subsets: ['latin']
@@ -20,7 +21,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={inter.className}>
-        {children}
+        <PostHogProvider>
+          {children}
+        </PostHogProvider>
         <Toaster richColors />
         <Analytics />
         <SpeedInsights />

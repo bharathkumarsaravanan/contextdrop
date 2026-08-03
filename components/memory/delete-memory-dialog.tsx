@@ -13,6 +13,7 @@ import { ReactNode, useState } from 'react';
 import { deleteMemory } from '@/app/dashboard/workspaces/[workspaceId]/actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { analytics } from '@/lib/analytics/events';
 
 type Props = { children: ReactNode; memoryId: string; workspaceId: string };
 
@@ -30,7 +31,7 @@ export function DeleteMemoryDialog({ children, memoryId, workspaceId }: Props) {
 
       return;
     }
-
+    analytics.memoryDeleted();
     toast.success('Memory block deleted');
     router.refresh();
     setLoading(false);

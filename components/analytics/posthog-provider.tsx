@@ -18,7 +18,8 @@ export default function PostHogProvider({
             api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
             person_profiles: "identified_only",
             capture_pageview: true,
-            capture_pageleave: true
+            capture_pageleave: true,
+            autocapture: false,
         })
     }, []);
 

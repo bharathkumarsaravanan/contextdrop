@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { MemoryForm } from './memory-form';
 import { MemoryBlock } from '@/types/memory-block';
+import { analytics } from '@/lib/analytics/events';
 
 type Props = { children: ReactNode; memoryData: MemoryBlock; };
 
@@ -27,8 +28,8 @@ export function EditMemoryDialog({ children, memoryData }: Props) {
             setLoading(false);
             return;
         };
-
-        toast.success("Memory block created");
+        analytics.memoryUpdated();
+        toast.success("Memory block updated");
         setOpen(false);
         router.refresh();
         setLoading(false);

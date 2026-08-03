@@ -7,6 +7,7 @@ import { deleteWorkspace } from "@/app/dashboard/actions";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import { analytics } from "@/lib/analytics/events";
 
 type Props = {
     workspaceId: string;
@@ -28,7 +29,7 @@ export function WorkspaceActions({
 
             return;
         }
-
+        analytics.workspacedeleted();
         toast.success("Workspace deleted!");
         router.refresh();
         setLoading(false);

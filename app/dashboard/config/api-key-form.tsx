@@ -59,7 +59,7 @@ export function ApiKeyForm({ hasKey }: Props) {
         toast.error(error);
         return;
       }
-
+      analytics.apiKeyDeleted();
       toast.success("OpenRouter API key removed.");
       router.refresh();
     } catch {

@@ -4,8 +4,17 @@ export const analytics = {
     workspaceCreated: () => {
         posthog.capture("workspace.created");
     }, 
+    workspacedeleted: () => {
+        posthog.capture("workspace.deleted");
+    }, 
     memoryCreated: () => {
         posthog.capture("memory.created");
+    },
+    memoryUpdated: () => {
+        posthog.capture("memory.updated");
+    },
+    memoryDeleted: () => {
+        posthog.capture("memory.deleted");
     },
     contextGenerated: () => {
         posthog.capture("context.generated");
@@ -21,5 +30,9 @@ export const analytics = {
     }, 
     apiKeyConnected: () => {
         posthog.capture("apikey.connected")
-    }
+    },
+    apiKeyDeleted: () => {
+        posthog.capture("apikey.deleted")
+    },
+
 }

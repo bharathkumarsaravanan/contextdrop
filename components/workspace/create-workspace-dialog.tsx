@@ -15,6 +15,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { toast } from 'sonner';
+import { analytics } from '@/lib/analytics/events';
 
 export function CreateWorkspaceDialog() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export function CreateWorkspaceDialog() {
     }
 
     toast.success('Workspace created!');
+    analytics.workspaceCreated();
     setOpen(false);
     router.refresh();
     setLoading(false);

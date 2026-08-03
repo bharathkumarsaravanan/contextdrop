@@ -14,6 +14,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "../ui/dialog";
+import { analytics } from "@/lib/analytics/events";
 
 type Props = {
     workspaceId: string;
@@ -39,6 +40,7 @@ export function CreateMemoryBlockDialog({
         };
 
         toast.success("Memory block created");
+        analytics.memoryCreated();
         setOpen(false);
         router.refresh();
         setLoading(false);

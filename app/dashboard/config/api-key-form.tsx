@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { CircleCheckBig } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { removeOpenRouterKey } from '../actions/remove-openrouter-key';
+import { analytics } from '@/lib/analytics/events';
 
 
 type Props = { hasKey: boolean };
@@ -39,6 +40,7 @@ export function ApiKeyForm({ hasKey }: Props) {
       setApikey("");
       setIsEditing(false);
       router.refresh();
+      analytics.apiKeyConnected();
     } catch (error) {
       console.error(error);
 

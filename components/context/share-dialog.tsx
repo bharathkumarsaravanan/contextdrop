@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { handleCopy } from "@/lib/utils";
 import { setTimeout } from "timers";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import { analytics } from "@/lib/analytics/events";
 
 type Props = {
   context: GeneratedContext;
@@ -38,6 +39,7 @@ export function ShareContextDialog({ context, children }: Props) {
       setUrl(url);
       handleCopy(url || "");
       toast.success("The sharable url " + url + " is copied to ur clipboard.");
+      analytics.contextShared();
     } else {
         setError(error || "Failed to generate share link");
     }

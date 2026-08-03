@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { optimizeContextAction } from '@/app/dashboard/actions/optimize-context';
 import { saveGeneratedContext } from '@/app/dashboard/actions/save-generated-context';
 import { Workspace } from '@/types/workspace';
+import { analytics } from '@/lib/analytics/events';
 
 type Props = { blocks: MemoryBlock[]; workspace: Workspace, initialRemainingOptimizations: number };
 
@@ -26,6 +27,7 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
   function handleGenerate() {
     const selectedBlocks = blocks.filter((block) => selectedIds.has(block.id));
     const context = generateContext(workspace.name, selectedBlocks);
+    analytics.contextGenerated();
     setGeneratedContext(context);
     setContextTimestamp(new Date());
     previewRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,6 +50,7 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
       }
 
       toast.success('Context optimized with AI');
+      analytics.aiOptimizeSuccess();
     } catch (error) {
       console.error(error);
       toast.error('Failed to optimize context');
@@ -102,6 +105,7 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
       await navigator.clipboard.writeText(generatedContext);
       setCopied(true);
       toast.success('Context copied to clipboard');
+      analytics.contextCopied();
       setTimeout(() => {
         setCopied(false);
       }, 2000);

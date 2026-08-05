@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ??
+  "https://contextdrop-green.vercel.app";
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -12,6 +15,6 @@ export default function robots(): MetadataRoute.Robots {
                 "/auth/*"
             ]
         },
-        sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`
+        sitemap: `${baseUrl}/sitemap.xml`
     }
 }

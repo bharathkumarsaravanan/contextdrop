@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { YoutubeEmbed } from "./youtube-embed";
 
 export default function DemoPage() {
   return (
@@ -48,12 +49,13 @@ export default function DemoPage() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-2xl">
-                  Launch SaaS MVP
+                  Product Demo
                 </CardTitle>
 
                 <CardDescription className="mt-2">
-                  Example workspace showing how reusable project knowledge
-                  becomes AI-ready context.
+                  See how ContextDrop turns
+                  project knowledge into reusable
+                  AI context.
                 </CardDescription>
               </div>
 
@@ -63,14 +65,11 @@ export default function DemoPage() {
             </div>
           </CardHeader>
 
-          <CardContent className="h-[500px] flex items-center justify-center rounded-lg border border-dashed">
-            <div className="text-center">
-              <Sparkles className="mx-auto h-8 w-8 text-primary" />
-
-              <p className="mt-4 text-muted-foreground">
-                Demo memories will be added in the next chunk.
-              </p>
-            </div>
+          <CardContent className="h-[500px] flex items-center justify-center rounded-lg border border-dashed mx-10">
+            <YoutubeEmbed 
+              videoId="dQw4w9WgXcQ"
+              title="ContextDrop Demo"
+            />
           </CardContent>
         </Card>
 

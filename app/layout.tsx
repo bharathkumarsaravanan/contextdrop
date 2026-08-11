@@ -25,7 +25,8 @@ export default function RootLayout({
   );
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://contextdrop-green.vercel.app';
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://usecontextdrop.com';
 const title = "ContextDrop";
 const description = "Stop rewriting project context for AI. Save reusable project knowledge, generate structured context, and work seamlessly across ChatGPT, Claude, Gemini, and Cursor.";
 const socialImage = "/og-image.png";

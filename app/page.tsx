@@ -53,11 +53,12 @@ export default function Home() {
             See ContextDrop in Action
           </p>
           <Image
-            src="/images/landing/hero-screenshot.png"
+            src="/images/landing/hero-screenshot.webp"
             alt="ContextDrop workspace showing memory selection and AI-ready context generation"
             width={1600}
             height={900}
             className="rounded-xl border mt-4"
+            priority
           />
         </div>
       </section>

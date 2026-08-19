@@ -100,5 +100,4 @@ icons: {
   apple: '/icon.svg',
 },
   robots: { index: true, follow: true },
-  manifest: '/site.webmanifest'
 };

@@ -67,7 +67,7 @@ export default function DemoPage() {
 
           <CardContent className="h-[500px] flex items-center justify-center rounded-lg border border-dashed mx-10">
             <YoutubeEmbed 
-              videoId="dQw4w9WgXcQ"
+              videoId="VxI7KUBffI0"
               title="ContextDrop Demo"
             />
           </CardContent>

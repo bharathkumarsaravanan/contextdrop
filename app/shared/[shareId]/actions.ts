@@ -43,7 +43,7 @@ export async function handleShareContext(contextId: string) {
 
     return {
         success: true,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}shared/${shareId}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/shared/${shareId}`,
     }
     
 }

@@ -48,7 +48,7 @@ export function AuthForm() {
                 </p>
             </div>
 
-            <Input 
+            {/* <Input 
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -61,7 +61,7 @@ export function AuthForm() {
                 disabled={loading}
             >
                 {loading ? "Loading..." : "Continue with Email"}
-            </Button>
+            </Button> */}
 
             <Button
                 className="h-11 rounded-xl bg-white px-5 text-black hover:bg-zinc-200 w-full"

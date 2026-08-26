@@ -2,8 +2,6 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import PostHogProvider from '@/components/analytics/posthog-provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -18,8 +16,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <PostHogProvider>{children}</PostHogProvider>
         <Toaster richColors />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

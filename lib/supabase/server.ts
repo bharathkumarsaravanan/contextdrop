@@ -13,9 +13,14 @@ export async function createClient() {
                     return cookiestore.getAll();
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => 
-                        cookiestore.set(name, value, options)
-                    );
+                    try {
+                        cookiesToSet.forEach(({ name, value, options }) => 
+                            cookiestore.set(name, value, options)
+                        );
+                    } catch {
+                        // Server Components cannot modify cookies.
+                        // Supabase session refresh is handled by middleware.
+                    }
                 }
             }
         }

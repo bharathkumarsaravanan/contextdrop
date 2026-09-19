@@ -8,7 +8,7 @@ It provides a persistent memory layer for AI-assisted development, allowing user
 ## Status
 
 - Status: Production
-- Version: `v2.2.0`
+- Version: `v2.3.0`
 - Framework: Next.js
 - Runtime: Cloudflare Workers
 - Deployment: Cloudflare
@@ -325,7 +325,7 @@ Supabase
 Current release:
 
 ```text
-v2.2.0
+v2.3.0
 ```
 
 ## Related Repository

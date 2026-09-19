@@ -15,3 +15,8 @@ body {
   background: #09090b;
   color: white;
 }
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  background-color: #18181b;
+  color: #fafafa;
+}

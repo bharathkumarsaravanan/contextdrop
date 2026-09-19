@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ConsentActions } from "./consent-actions";
+import { BookOpen, Search, ShieldCheck } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 type ConsentPageProps = {
   searchParams: Promise<{
@@ -8,16 +11,16 @@ type ConsentPageProps = {
   }>;
 };
 
-export default async function ConsentPage({
-  searchParams,
-}: ConsentPageProps) {
+export default async function ConsentPage({ searchParams }: ConsentPageProps) {
   const { authorization_id: authorizationId } = await searchParams;
 
   if (!authorizationId) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-6">
         <div className="w-full max-w-md rounded-xl border bg-card p-8 shadow-sm">
-          <h1 className="text-xl font-semibold">Invalid authorization request</h1>
+          <h1 className="text-xl font-semibold">
+            Invalid authorization request
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             This OAuth request is missing the required authorization ID.
           </p>
@@ -54,7 +57,8 @@ export default async function ConsentPage({
           <h1 className="text-xl font-semibold">Authorization Error</h1>
 
           <p className="mt-2 text-sm text-muted-foreground">
-            {error?.message ?? "This authorization request is invalid or has expired."}
+            {error?.message ??
+              "This authorization request is invalid or has expired."}
           </p>
         </div>
       </main>
@@ -65,17 +69,13 @@ export default async function ConsentPage({
     redirect(authorizationDetails.redirect_url);
   }
 
-  const scopes = authorizationDetails.scope
-    ? authorizationDetails.scope.split(" ")
-    : [];
-
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-6 py-12">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-3 flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            C
+            <Image src="../../icon.svg" alt="ContextDrop" width={30} priority />
           </div>
 
           <p className="text-sm font-medium text-muted-foreground">
@@ -102,27 +102,49 @@ export default async function ConsentPage({
           </div>
 
           {/* Permissions */}
-          <div className="mt-6">
-            <p className="text-sm font-medium">Requested permissions</p>
+          <Card className="mt-6">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="size-4 text-primary" />
+                <CardTitle className="text-sm font-medium">
+                  ContextDrop access
+                </CardTitle>
+              </div>
+            </CardHeader>
 
-            <div className="mt-3 space-y-2">
-              {scopes.length > 0 ? (
-                scopes.map((scope) => (
-                  <div
-                    key={scope}
-                    className="flex items-center gap-3 rounded-lg border px-3 py-2.5"
-                  >
-                    <div className="size-2 rounded-full bg-primary" />
-                    <span className="text-sm">{scope}</span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No additional permissions requested.
-                </p>
-              )}
-            </div>
-          </div>
+            <CardContent className="space-y-3">
+              <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-3">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-background">
+                  <BookOpen className="size-4 text-muted-foreground" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium">Read project context</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    Access your selected ContextDrop project context.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-3">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-background">
+                  <Search className="size-4 text-muted-foreground" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium">Search project memories</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    Search memories stored in your ContextDrop project.
+                  </p>
+                </div>
+              </div>
+
+              <p className="pt-1 text-xs leading-5 text-muted-foreground">
+                This connection is read-only. It does not expose tools to
+                create, edit, or delete your ContextDrop data.
+              </p>
+            </CardContent>
+          </Card>
 
           <div className="mt-8 space-y-3">
             <ConsentActions authorizationId={authorizationId} />

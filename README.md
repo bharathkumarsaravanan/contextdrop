@@ -320,6 +320,82 @@ Cloudflare Worker
 Supabase
 ```
 
+## AI Client Integrations
+
+ContextDrop provides a shared MCP-based memory layer for AI development tools.
+
+Production MCP server:
+
+`https://mcp.usecontextdrop.com/mcp`
+
+Currently supported clients:
+
+- Cursor
+- Claude
+
+Both clients connect to the same ContextDrop MCP server and use the same
+persistent project memory.
+
+### Cursor
+
+1. Open Cursor and open the MCP settings.
+2. Add a new remote MCP server.
+3. Use:
+
+   `https://mcp.usecontextdrop.com/mcp`
+
+4. Complete the ContextDrop OAuth authentication when prompted.
+5. Reload Cursor if the MCP tools do not appear immediately.
+
+Cursor can then use:
+
+- `get_project_context`
+- `search_memory`
+- `save_memory`
+- `update_memory`
+
+Cursor does not provide a `workspace_id`. ContextDrop automatically uses the
+active MCP project selected from the ContextDrop dashboard.
+
+### Claude
+
+1. Open Claude.
+2. Go to **Settings → Connectors**.
+3. Select **Add custom connector**.
+4. Enter:
+
+   `https://mcp.usecontextdrop.com/mcp`
+
+5. Select **Sign in now**.
+6. Keep **Register automatically** selected for OAuth client registration.
+7. Complete the ContextDrop OAuth flow.
+8. Enable the ContextDrop connector in a Claude conversation.
+
+Claude can then use:
+
+- `get_project_context`
+- `search_memory`
+- `save_memory`
+- `update_memory`
+
+Claude does not provide a `workspace_id`. ContextDrop automatically uses the
+active MCP project selected from the ContextDrop dashboard.
+
+### Shared Project Memory
+
+Cursor and Claude use the same ContextDrop project memory.
+
+A memory created by Cursor can be retrieved or updated by Claude, and a memory
+created by Claude can be retrieved or updated by Cursor.
+
+```text
+             ContextDrop
+          Shared Project Memory
+              /        \
+             /          \
+         Cursor        Claude
+        READ/WRITE    READ/WRITE
+
 ## Version
 
 Current release:

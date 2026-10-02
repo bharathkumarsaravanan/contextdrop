@@ -13,7 +13,7 @@ export async function getUserPreferences() {
 
     const { data, error } = await supabase
         .from("user_preferences")
-        .select("user_id, active_mcp_workspace_id")
+        .select("user_id, active_mcp_workspace_id, mcp_enabled")
         .eq("user_id", user.id)
         .maybeSingle();
 

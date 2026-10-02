@@ -12,13 +12,15 @@ import { createClient } from "@/lib/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getWorkspaces } from "@/lib/workspaces";
 import { getUserPreferences } from "@/lib/user-preferences";
-import { McpProjectSelector } from "./mcp-project-selector";
+import { McpSettings } from "./mcp-settings";
+
 
 export const metadata = {
   title: "AI Settings",
 };
 
 export default async function ConfigPage() {
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -125,36 +127,11 @@ export default async function ConfigPage() {
           </TabsContent>
           {/* MCP  */}
           <TabsContent value="mcp" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>MCP & Integrations</CardTitle>
-
-                <CardDescription>
-                  Choose which ContextDrop project your connected MCP clients
-                  should use.
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Active MCP project</p>
-
-                  <p className="text-sm text-muted-foreground">
-                    Connected MCP clients will use this project when retrieving
-                    your ContextDrop context.
-                  </p>
-
-                  <div className="pt-2">
-                    <McpProjectSelector
-                      workspaces={workspaces}
-                      activeWorkspaceId={
-                        preferences?.active_mcp_workspace_id ?? null
-                      }
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <McpSettings 
+              workspaces={workspaces}
+              activeWorkspaceId={preferences?.active_mcp_workspace_id ?? null}
+              mcpEnabled={preferences?.mcp_enabled ?? true}
+            />
           </TabsContent>
         </Tabs>
       </div>

@@ -140,8 +140,8 @@ export default async function ConsentPage({ searchParams }: ConsentPageProps) {
               </div>
 
               <p className="pt-1 text-xs leading-5 text-muted-foreground">
-                This connection is read-only. It does not expose tools to
-                create, edit, or delete your ContextDrop data.
+                This connection can read, search, create, and update memory in
+                your selected ContextDrop project.
               </p>
             </CardContent>
           </Card>

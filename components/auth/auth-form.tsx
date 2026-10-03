@@ -2,12 +2,9 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 
 export function AuthForm() {
     const supabase = createClient();
-
-    const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
     async function signInWithGoogle() {
@@ -23,20 +20,6 @@ export function AuthForm() {
         setLoading(false);
     }
 
-    async function signInWithEmail() {
-        setLoading(true);
-
-        await supabase.auth.signInWithOtp({
-            email,
-            options: {
-                emailRedirectTo: `${location.origin}/auth/callback`
-            }
-        });
-
-        setLoading(false);
-        alert("Check your email.");
-    }
-
     return (
         <div className="w-full max-w-sm space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
             <div className="space-y-2 text-center">
@@ -47,21 +30,6 @@ export function AuthForm() {
                     Persistent memory for AI workflows.
                 </p>
             </div>
-
-            {/* <Input 
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-12 border-zinc-800 bg-zinc-900 focus-visible:ring-1 focus-visible:ring-white"
-            />
-
-            <Button
-                className="h-11 rounded-xl bg-white px-5 text-black hover:bg-zinc-200 w-full"
-                onClick={signInWithEmail}
-                disabled={loading}
-            >
-                {loading ? "Loading..." : "Continue with Email"}
-            </Button> */}
 
             <Button
                 className="h-11 rounded-xl bg-white px-5 text-black hover:bg-zinc-200 w-full"

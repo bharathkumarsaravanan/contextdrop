@@ -1,7 +1,6 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { success } from 'zod';
 
 export async function setActiveMcpWorkspace(workspaceId: string) {
   const supabase = await createClient();

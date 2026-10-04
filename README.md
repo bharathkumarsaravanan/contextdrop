@@ -27,7 +27,7 @@ It provides a persistent memory layer for AI-assisted development, allowing user
 - API key / BYOK support
 - Cursor integration through remote MCP
 - OAuth 2.1 authentication for MCP
-- Active MCP project selection
+- Active Workspace selection
 - Read-only project context and memory access from Cursor
 
 ## Architecture
@@ -52,7 +52,7 @@ It provides a persistent memory layer for AI-assisted development, allowing user
                               |
                        User Preferences
                               |
-                    Active MCP Project
+                    Active Workspace
 ```
 
 The web application and MCP server are maintained as separate services and repositories.
@@ -79,7 +79,7 @@ ping()
 
 ### Active Project
 
-The user selects the active MCP project from:
+The user selects the Active Workspace from:
 
 ```text
 ContextDrop
@@ -100,7 +100,7 @@ Instead:
 ```text
 ContextDrop UI
       ↓
-Active MCP project
+Active Workspace
       ↓
 Supabase
       ↓
@@ -272,7 +272,7 @@ Currently supported:
 
 - Read active project context
 - Search project memory
-- Switch active MCP project from ContextDrop
+- Switch Active Workspace from ContextDrop
 - Cursor integration through remote MCP
 
 Not currently implemented:
@@ -355,7 +355,7 @@ Cursor can then use:
 - `update_memory`
 
 Cursor does not provide a `workspace_id`. ContextDrop automatically uses the
-active MCP project selected from the ContextDrop dashboard.
+Active Workspace selected from the ContextDrop dashboard.
 
 ### Claude
 
@@ -379,7 +379,7 @@ Claude can then use:
 - `update_memory`
 
 Claude does not provide a `workspace_id`. ContextDrop automatically uses the
-active MCP project selected from the ContextDrop dashboard.
+Active Workspace selected from the ContextDrop dashboard.
 
 ### Shared Project Memory
 

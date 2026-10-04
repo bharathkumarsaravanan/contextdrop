@@ -8,66 +8,66 @@ import { Button } from "../ui/button";
 import { MemoryForm } from "./memory-form";
 
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "../ui/dialog";
 import { analytics } from "@/lib/analytics/events";
 
 type Props = {
-    workspaceId: string;
+  workspaceId: string;
 };
 
-export function CreateMemoryBlockDialog({
-    workspaceId
-}: Props) {
-    
-    const router = useRouter();
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+export function CreateMemoryBlockDialog({ workspaceId }: Props) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    async function handleSubmit(formData:FormData) {
-        setLoading(true);
-        
-        const result =  await createMemoryBlock(workspaceId, formData);
+  async function handleSubmit(formData: FormData) {
+    setLoading(true);
 
-        if (result?.error) {
-            toast.error(result.error);
-            setLoading(false);
-            return;
-        };
+    const result = await createMemoryBlock(workspaceId, formData);
 
-        toast.success("Memory block created");
-        analytics.memoryCreated();
-        setOpen(false);
-        router.refresh();
-        setLoading(false);
+    if (result?.error) {
+      toast.error(result.error);
+      setLoading(false);
+      return;
     }
 
-    return (
-      <Dialog
-        open={open}
-        onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button className='h-11 rounded-xl border border-zinc-800/80 bg-zinc-900 px-5 text-white hover:bg-zinc-800/80'>
-            <Plus className='mr-2 h-4 w-4' />
-            Add Memory
-          </Button>
-        </DialogTrigger>
+    toast.success("Memory saved");
+    analytics.memoryCreated();
+    setOpen(false);
+    router.refresh();
+    setLoading(false);
+  }
 
-        <DialogContent className='border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur'>
-          <DialogHeader>
-            <DialogTitle>Create Memory Block</DialogTitle>
-          </DialogHeader>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="h-11 rounded-xl border border-zinc-800/80 bg-zinc-900 px-5 text-white hover:bg-zinc-800/80">
+          <Plus className="mr-2 h-4 w-4" />
+          Add Memory
+        </Button>
+      </DialogTrigger>
 
-          <MemoryForm 
-            isLoading={loading}
-            submitText="Create Memory"
-            onSubmit={handleSubmit}
-          />
-        </DialogContent>
-      </Dialog>
-    );
+      <DialogContent className="border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur sm:max-w-lg">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="text-xl font-semibold tracking-tight">
+            Add Project Memory
+          </DialogTitle>
+          <p className="text-sm leading-6 text-zinc-500">
+            Store knowledge your AI should remember about this project.
+          </p>
+        </DialogHeader>
+
+        <MemoryForm
+          isLoading={loading}
+          submitText="Save Memory"
+          onSubmit={handleSubmit}
+        />
+      </DialogContent>
+    </Dialog>
+  );
 }

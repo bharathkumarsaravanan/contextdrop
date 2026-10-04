@@ -1,28 +1,38 @@
-'use client';
-import { useState, useRef } from 'react';
-import { MemoryBlock } from '@/types/memory-block';
-import { MemoryBlockCard } from './memory-block-card';
-import { generateContext } from '@/lib/context-generator';
-import { Button } from '../ui/button';
-import { ContextPreview } from '../context/context-preview';
-import { ContextEmptyState } from '../context/context-empty-state';
-import { toast } from 'sonner';
-import { optimizeContextAction } from '@/app/dashboard/actions/optimize-context';
-import { saveGeneratedContext } from '@/app/dashboard/actions/save-generated-context';
-import { Workspace } from '@/types/workspace';
-import { analytics } from '@/lib/analytics/events';
+"use client";
+import { useState, useRef } from "react";
+import { MemoryBlock } from "@/types/memory-block";
+import { MemoryBlockCard } from "./memory-block-card";
+import { generateContext } from "@/lib/context-generator";
+import { Button } from "../ui/button";
+import { ContextPreview } from "../context/context-preview";
+import { ContextEmptyState } from "../context/context-empty-state";
+import { toast } from "sonner";
+import { optimizeContextAction } from "@/app/dashboard/actions/optimize-context";
+import { saveGeneratedContext } from "@/app/dashboard/actions/save-generated-context";
+import { Workspace } from "@/types/workspace";
+import { analytics } from "@/lib/analytics/events";
 
-type Props = { blocks: MemoryBlock[]; workspace: Workspace, initialRemainingOptimizations: number };
+type Props = {
+  blocks: MemoryBlock[];
+  workspace: Workspace;
+  initialRemainingOptimizations: number;
+};
 
-export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizations }: Props) {
+export function MemoryBlockList({
+  blocks,
+  workspace,
+  initialRemainingOptimizations,
+}: Props) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [generatedContext, setGeneratedContext] = useState('');
+  const [generatedContext, setGeneratedContext] = useState("");
   const [copied, setCopied] = useState(false);
   const [optimizing, setOptimizing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [contextTimestamp, setContextTimestamp] = useState<Date | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
-  const [remainingOptimizations, setRemainingOptimizations] = useState<number|null>(initialRemainingOptimizations);
+  const [remainingOptimizations, setRemainingOptimizations] = useState<
+    number | null
+  >(initialRemainingOptimizations);
 
   function handleGenerate() {
     const selectedBlocks = blocks.filter((block) => selectedIds.has(block.id));
@@ -45,15 +55,15 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
       }
       setGeneratedContext(data);
 
-      if (typeof remaining === 'number') {
+      if (typeof remaining === "number") {
         setRemainingOptimizations(remaining);
       }
 
-      toast.success('Context optimized with AI');
+      toast.success("Context optimized with AI");
       analytics.aiOptimizeSuccess();
     } catch (error) {
       console.error(error);
-      toast.error('Failed to optimize context');
+      toast.error("Failed to optimize context");
     } finally {
       setOptimizing(false);
       setContextTimestamp(new Date());
@@ -65,7 +75,7 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
       setSaving(true);
       const { success, error } = await saveGeneratedContext(
         workspace.id,
-        generatedContext
+        generatedContext,
       );
       if (!success) {
         toast.error(error);
@@ -73,10 +83,10 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
         return;
       }
       setSaving(false);
-      toast.success('Context saved');
+      toast.success("Context saved");
     } catch (error) {
       console.error(error);
-      toast.error('Failed to save context');
+      toast.error("Failed to save context");
     } finally {
       setSaving(false);
     }
@@ -104,30 +114,67 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
     try {
       await navigator.clipboard.writeText(generatedContext);
       setCopied(true);
-      toast.success('Context copied to clipboard');
+      toast.success("Context copied to clipboard");
       analytics.contextCopied();
       setTimeout(() => {
         setCopied(false);
       }, 2000);
     } catch {
-      toast.error('Failed to copy context');
+      toast.error("Failed to copy context");
     }
   }
 
+  function handleSelectAll() {
+    setSelectedIds(new Set(blocks.map(block => block.id)));
+  }
+
+  function handleDeselect() {
+    setSelectedIds(new Set());
+  }
+
   return (
-    <div className='space-y-4'>
-      <div className='flex items-center justify-between'>
-        <div className='text-sm text-zinc-500'>{selectedIds.size} selected</div>
-        <div>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-zinc-500">
+          {blocks.length} {blocks.length === 1 ? "memory" : "memories"}
+        </div>
+
+        <div className='flex items-center gap-2'>
+          {selectedIds.size > 0 && (
+            <span className='text-sm text-zinc-500'>
+              {selectedIds.size} selected
+            </span>
+          )}
+
+          {selectedIds.size < blocks.length ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSelectAll}
+            >
+              Select All
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDeselect}
+            >
+              Clear All
+            </Button>
+          )}
+        </div>
+        {/* <div>
           <Button
-            size='sm'
+            size="sm"
             onClick={handleGenerate}
-            disabled={selectedIds.size === 0 || optimizing}>
+            disabled={selectedIds.size === 0 || optimizing}
+          >
             Generate Context
           </Button>
-        </div>
+        </div> */}
       </div>
-      <div className='grid gap-4 md:grid-cols-2'>
+      <div className="grid gap-4 md:grid-cols-2">
         {blocks.map((block) => (
           <MemoryBlockCard
             key={block.id}
@@ -137,7 +184,7 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
           />
         ))}
       </div>
-      <div ref={previewRef} className='mt-8 overflow-auto'>
+      <div ref={previewRef} className="mt-8 overflow-auto">
         {generatedContext ? (
           <ContextPreview
             content={generatedContext}
@@ -151,10 +198,11 @@ export function MemoryBlockList({ blocks, workspace, initialRemainingOptimizatio
             remainingOptimizations={remainingOptimizations}
             optimizeBtn={
               <Button
-                size='sm'
+                size="sm"
                 onClick={handleOptimize}
-                disabled={!generatedContext || optimizing}>
-                {optimizing ? 'Optimizing' : 'Optimize with AI'}
+                disabled={!generatedContext || optimizing}
+              >
+                {optimizing ? "Optimizing" : "Optimize with AI"}
               </Button>
             }
           />

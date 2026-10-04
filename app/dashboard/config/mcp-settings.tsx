@@ -28,8 +28,6 @@ export async function McpSettings({
   const mcpGrantsResult = await getMcpGrants();
   const grants = mcpGrantsResult.success ? mcpGrantsResult.grants : [];
 
-  console.log(grants, 'MCP GRANTS');
-
   return (
     <div className='space-y-6'>
       <Card>
@@ -37,17 +35,17 @@ export async function McpSettings({
           <CardTitle>MCP & Integrations</CardTitle>
 
           <CardDescription>
-            Choose which ContextDrop project your connected MCP clients should
+            Choose which ContextDrop workspace your connected MCP clients should
             use.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <div className='space-y-2'>
-            <p className='text-sm font-medium'>Active MCP project</p>
+            <p className='text-sm font-medium'>Active Workspace</p>
 
             <p className='text-sm text-muted-foreground'>
-              Connected MCP clients will use this project when retrieving your
+              Connected MCP clients will use this workspace when retrieving your
               ContextDrop context.
             </p>
 

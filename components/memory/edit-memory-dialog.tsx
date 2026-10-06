@@ -41,9 +41,12 @@ export function EditMemoryDialog({ children, memoryData }: Props) {
       onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className='border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur'>
-        <DialogHeader>
-          <DialogTitle>Update Memory Block</DialogTitle>
+      <DialogContent className="border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur sm:max-w-lg">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="text-xl font-semibold tracking-tight">Update Memory Block</DialogTitle>
+          <p className="text-sm leading-6 text-zinc-500">
+            Edit knowledge your AI should remember about this project.
+          </p>
         </DialogHeader>
 
         <MemoryForm
@@ -59,4 +62,4 @@ export function EditMemoryDialog({ children, memoryData }: Props) {
       </DialogContent>
     </Dialog>
   );
-}
+} 

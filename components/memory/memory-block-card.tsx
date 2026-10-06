@@ -6,9 +6,10 @@ type Props = {
   block: MemoryBlock;
   selected: boolean;
   onSelect: (blockId: string, checked: boolean) => void;
+  selectable?: boolean;
 };
 
-export function MemoryBlockCard({ block, selected, onSelect }: Props) {
+export function MemoryBlockCard({ block, selected, onSelect, selectable }: Props) {
   return (
     <div
       className={`rounded-2xl border p-5 transition ${
@@ -20,12 +21,12 @@ export function MemoryBlockCard({ block, selected, onSelect }: Props) {
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-4">
           <div className="flex items-start gap-3">
-            <Checkbox
+            {selectable && (<Checkbox
               checked={selected}
               onCheckedChange={(checked) =>
                 onSelect(block.id, Boolean(checked))
               }
-            />
+            />)}
 
             <div className="min-w-0">
               <h2 className="font-semibold text-white">{block.title}</h2>

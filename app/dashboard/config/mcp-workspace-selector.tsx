@@ -29,7 +29,7 @@ type Props = {
   activeWorkspaceId: string | null;
 };
 
-export function McpProjectSelector({ workspaces, activeWorkspaceId }: Props) {
+export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(activeWorkspaceId);
@@ -75,7 +75,7 @@ export function McpProjectSelector({ workspaces, activeWorkspaceId }: Props) {
           <span className="truncate">
             {isPending
               ? "Saving..."
-              : activeWorkspace?.name ?? "Select a project"}
+              : activeWorkspace?.name ?? "Select a workspace"}
           </span>
 
           {isPending ? (
@@ -88,12 +88,12 @@ export function McpProjectSelector({ workspaces, activeWorkspaceId }: Props) {
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
         <Command>
           <CommandInput
-            placeholder="Search projects..."
+            placeholder="Search workspaces..."
             className="border-0 bg-transparent text-white outline-none ring-0 placeholder:text-zinc-500 focus:border-0 focus:outline-none focus:ring-0"
           />
 
           <CommandList>
-            <CommandEmpty>No projects found.</CommandEmpty>
+            <CommandEmpty>No workspace found.</CommandEmpty>
 
             <CommandGroup>
               {workspaces.map((workspace) => (

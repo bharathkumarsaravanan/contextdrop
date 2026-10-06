@@ -7,17 +7,16 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Learn how to reach support, and get help from the team.",
+  description: "Learn how to reach support, and get help from the team.",
 };
 
-export default function ContactsPage() {
+export default function ContactPage() {
   return (
     <LegalLayout>
       <LegalHeader
         title="Contact"
         description="Need help, have a question, or want to report an issue? We'd love to hear from you."
-        lastUpdated="August 4, 2026"
+        lastUpdated="Oct 6, 2026"
       />
 
       <div className="my-12 border-t border-border" />
@@ -83,26 +82,12 @@ export default function ContactsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="Support">
-        <p>
-          If you have questions about ContextDrop, encounter a bug, or need
-          assistance using the platform, please do not hesitate to get in touch.
-        </p>
-
-        <p>
-          We aim to respond to support requests as quickly as possible and
-          appreciate your patience while ContextDrop continues to grow.
-        </p>
-      </LegalSection>
-
       <LegalSection title="Feedback">
         <p>
-          We welcome feedback, feature suggestions, and bug reports. Your input
+          I welcome feedback, feature suggestions, and bug reports. Your input
           helps improve ContextDrop and shape future updates.
         </p>
       </LegalSection>
-
-      
     </LegalLayout>
   );
 }

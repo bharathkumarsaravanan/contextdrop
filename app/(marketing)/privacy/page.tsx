@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <LegalHeader
         title="Privacy Policy"
         description="Learn how ContextDrop collects, stores and protects your information while providing reusable project context across AI assistants."
-        lastUpdated="August 4, 2026"
+        lastUpdated="Oct 6, 2026"
       />
 
       <div className="my-12 border-t border-border" />
@@ -142,8 +142,33 @@ export default function PrivacyPage() {
 
         <p>
           These services currently include Supabase for authentication and
-          database services, OpenRouter for AI requests initiated by users, and
-          Vercel for application hosting and delivery.
+          database services, OpenRouter for AI requests initiated by users,
+          Cloudflare for MCP infrastructure, web application and related
+          services, and PostHog for product analytics.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="MCP Connections">
+        <p>
+          ContextDrop allows you to connect compatible AI clients through the
+          Model Context Protocol (MCP). When you authorize an MCP client, it may
+          access the ContextDrop workspace and memories available to your active
+          workspace according to the permissions granted through the
+          authentication flow.
+        </p>
+
+        <p>
+          MCP connections are authorized through OAuth. You can view and
+          disconnect authorized MCP clients from the MCP & Integrations settings
+          in ContextDrop. Disabling MCP access also prevents connected clients
+          from accessing ContextDrop through MCP until access is re-enabled.
+        </p>
+
+        <p>
+          When you use an MCP client with ContextDrop, requests made through MCP
+          may include information necessary to retrieve, search, create, or
+          update memories in your authorized workspace. These requests are
+          processed to provide the MCP functionality you requested.
         </p>
       </LegalSection>
 
@@ -177,7 +202,10 @@ export default function PrivacyPage() {
         </p>
 
         <p>
-          <strong>Email:</strong> <a href="mailto:real.bharathsaravanan@email.com">real.bharathsaravanan@email.com</a>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:real.bharathsaravanan@email.com">
+            real.bharathsaravanan@email.com
+          </a>
         </p>
       </LegalSection>
 
@@ -185,8 +213,8 @@ export default function PrivacyPage() {
         <p>
           We may update this Privacy Policy from time to time to reflect changes
           in ContextDrop, legal requirements, or improvements to our services.
-          When significant changes are made, the Last updated date at the top
-          of this page will be revised accordingly.
+          When significant changes are made, the Last updated date at the top of
+          this page will be revised accordingly.
         </p>
       </LegalSection>
     </LegalLayout>

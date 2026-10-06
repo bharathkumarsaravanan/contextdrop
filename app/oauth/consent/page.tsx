@@ -119,9 +119,9 @@ export default async function ConsentPage({ searchParams }: ConsentPageProps) {
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium">Read project context</p>
+                  <p className="text-sm font-medium">Read workspace context</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    Access your selected ContextDrop project context.
+                    Access your selected ContextDrop workspace context.
                   </p>
                 </div>
               </div>
@@ -132,16 +132,16 @@ export default async function ConsentPage({ searchParams }: ConsentPageProps) {
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium">Search project memories</p>
+                  <p className="text-sm font-medium">Search workspace memories</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    Search memories stored in your ContextDrop project.
+                    Search memories stored in your ContextDrop workspace.
                   </p>
                 </div>
               </div>
 
               <p className="pt-1 text-xs leading-5 text-muted-foreground">
                 This connection can read, search, create, and update memory in
-                your selected ContextDrop project.
+                your selected ContextDrop workspace.
               </p>
             </CardContent>
           </Card>

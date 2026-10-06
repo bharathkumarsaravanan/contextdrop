@@ -55,7 +55,7 @@ export function CreateMemoryBlockDialog({ workspaceId }: Props) {
       <DialogContent className="border border-zinc-800/80 bg-zinc-900/95 text-white shadow-2xl shadow-black/50 backdrop-blur sm:max-w-lg">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-xl font-semibold tracking-tight">
-            Add Project Memory
+            Add Memory
           </DialogTitle>
           <p className="text-sm leading-6 text-zinc-500">
             Store knowledge your AI should remember about this project.
@@ -71,3 +71,4 @@ export function CreateMemoryBlockDialog({ workspaceId }: Props) {
     </Dialog>
   );
 }
+ 

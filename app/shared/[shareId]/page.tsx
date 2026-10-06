@@ -32,7 +32,7 @@ export default async function SharedContextPage({ params }: Props) {
           <h1 className="mt-2 text-3xl font-bold">{data.name}</h1>
         </div>
         <div className="mb-6 flex justify-end">
-          <CopyContextButton content={data?.content} />
+          <CopyContextButton title="Context" content={data?.content} />
         </div>
         <Card>
           <CardContent className="p-6">

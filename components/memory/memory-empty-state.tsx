@@ -9,7 +9,7 @@ export function MemoryEmptyState({ workspaceId }: Props) {
     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 px-6 text-center">
       <div className="max-w-lg">
         <p className="mt-6 text-xs font-medium uppercase tracking-wider text-primary">
-          Project Memory
+          Persistent Memory
         </p>
 
         <h2 className="mt-3 text-2xl font-semibold tracking-tight">

@@ -40,7 +40,7 @@ export default async function DashboardPage() {
             </h1>
 
             <p className="mt-1 max-w-xl text-sm leading-6 text-zinc-500">
-              Organize your projects and the persistent memory your AI uses to
+              Organize your workspaces and the persistent memory your AI uses to
               understand them.
             </p>
 

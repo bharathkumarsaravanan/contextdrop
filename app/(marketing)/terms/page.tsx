@@ -5,17 +5,16 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description:
-    "Learn ContextDrop's terms and conditions",
+  description: "Learn ContextDrop's terms and conditions",
 };
 
-export default function ContactsPage() {
+export default function TermsPage() {
   return (
     <LegalLayout>
       <LegalHeader
         title="Terms of Service"
         description="Please read these Terms of Service carefully before using ContextDrop. By accessing or using the platform, you agree to these terms."
-        lastUpdated="August 4, 2026"
+        lastUpdated="Oct 6, 2026"
       />
       <div className="my-12 border-t border-border" />
       <LegalSection title="Acceptance of Terms">
@@ -33,14 +32,41 @@ export default function ContactsPage() {
 
       <LegalSection title="Description of the Service">
         <p>
-          ContextDrop is a productivity tool that helps developers organize,
-          generate, optimize, and share reusable project context for AI
-          assistants such as ChatGPT, Claude, Gemini, and Cursor.
+          ContextDrop is a productivity tool that helps developers store,
+          manage, generate, optimize, and reuse persistent project memory and
+          context across compatible AI tools.
+        </p>
+
+        <p>
+          ContextDrop also provides Model Context Protocol (MCP) integrations
+          that allow compatible AI clients to access and manage authorized
+          memories within your ContextDrop workspace.
         </p>
 
         <p>
           We may improve, modify, or discontinue features of the platform as the
           product evolves.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="MCP Connections">
+        <p>
+          ContextDrop allows you to connect compatible AI clients through the
+          Model Context Protocol (MCP). By authorizing an MCP client, you allow
+          that client to access or modify memories within your authorized
+          ContextDrop workspace according to the permissions provided by the
+          service.
+        </p>
+
+        <p>
+          You are responsible for the AI clients and MCP connections you
+          authorize. You should review the permissions and behavior of any
+          connected AI client before using it with your ContextDrop data.
+        </p>
+
+        <p>
+          You can manage authorized MCP clients and disable MCP access through
+          the MCP & Integrations settings in ContextDrop.
         </p>
       </LegalSection>
 
@@ -139,8 +165,8 @@ export default function ContactsPage() {
 
       <LegalSection title="Contact">
         <p>
-          If you have questions about this Privacy Policy or how your
-          information is handled, please contact us at:
+          If you have questions about these Terms of Service or how ContextDrop
+          operates, please contact us at:
         </p>
 
         <p>

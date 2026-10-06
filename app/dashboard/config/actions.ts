@@ -36,7 +36,7 @@ export async function setActiveMcpWorkspace(workspaceId: string) {
     );
 
   if (error) {
-    return { error: 'Unable to update active project.' };
+    return { error: 'Unable to update active workspace.' };
   }
 
   return { success: true };

@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import { McpProjectSelector } from './mcp-project-selector';
+import { McpWorkspaceSelector } from './mcp-workspace-selector';
 import type { Workspace } from '@/types/workspace';
 import { Input } from '@/components/ui/input';
 import { CopyContextButton } from '@/components/shared/copy-button';
@@ -13,6 +13,8 @@ import { McpAccessButton } from './mcp-access-button';
 import { Badge } from '@/components/ui/badge';
 import { getMcpGrants } from './actions';
 import { McpDisconnectButton } from './mcp-disconnect-button';
+import { McpEmptyState } from '@/components/config/mcp-empty-state';
+import { McpClientConnection } from './mcp-client-connection';
 
 type Props = {
   workspaces: Workspace[];
@@ -50,7 +52,7 @@ export async function McpSettings({
             </p>
 
             <div className='pt-2'>
-              <McpProjectSelector
+              <McpWorkspaceSelector
                 workspaces={workspaces}
                 activeWorkspaceId={activeWorkspaceId}
               />
@@ -63,7 +65,7 @@ export async function McpSettings({
         <CardHeader>
           <CardTitle>MCP Connection</CardTitle>
           <CardDescription>
-            Connect ContextDrop to AI clients such as Cursor and Claude.
+            Connect ContextDrop to MCP-compatible AI tools so they can securely access your project memory.
           </CardDescription>
         </CardHeader>
 
@@ -73,8 +75,8 @@ export async function McpSettings({
               <p className='text-sm font-medium'>Status</p>
               <p className='mt-1 text-sm text-muted-foreground'>
                 {mcpEnabled
-                  ? 'MCP access is currently enabled.'
-                  : 'MCP access is currently disabled.'}
+                  ? 'Your connected AI tools can access your active workspace through MCP.'
+                  : 'AI tools cannot access your ContextDrop memory until MCP access is enabled again.'}
               </p>
             </div>
 
@@ -111,6 +113,8 @@ export async function McpSettings({
             <McpAccessButton enabled={mcpEnabled} />
           </div>
 
+          <McpClientConnection />
+
           <div className='mt-6 space-y-3'>
             <div>
               <p className='text-sm font-medium'>Authorized Clients</p>
@@ -121,7 +125,9 @@ export async function McpSettings({
             </div>
 
             <div className='divide-y rounded-lg border'>
-              {grants.map((grant) => (
+              {grants.length > 0 ? (
+                <>
+                  {grants.map((grant) => (
                 <div
                   key={grant.client.id}
                   className='flex items-center justify-between gap-4 p-4'>
@@ -139,6 +145,11 @@ export async function McpSettings({
                   />
                 </div>
               ))}
+                </>
+              ) : (
+                <McpEmptyState />
+              ) }
+              
             </div>
           </div>
         </CardContent>

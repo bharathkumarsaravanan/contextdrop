@@ -9,11 +9,16 @@ import { WorkspaceNav } from "@/components/workspace/workspace-nav";
 import { DemoWorkspaceBanner } from "@/components/onboarding/demo-workspace-banner";
 import { Badge } from "@/components/ui/badge";
 
-type Props = { params: Promise<{ workspaceId: string }> };
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+  searchParams: Promise<{ q?: string }>;
+};
 
-export default async function WorkspacePage({ params }: Props) {
+export default async function WorkspacePage({ params, searchParams }: Props) {
   const { workspaceId } = await params;
+  const { q } = await searchParams;
   const supabase = await createClient();
+  const hasSearch = Boolean(q?.trim());
 
   const { data: workspace } = await supabase
     .from("workspaces")
@@ -25,23 +30,9 @@ export default async function WorkspacePage({ params }: Props) {
     notFound();
   }
 
-  const memoryBlocks = await getMemoryBlocks(workspaceId);
+  const memoryBlocks = await getMemoryBlocks(workspaceId, q);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let remainingOptimizations = 10;
-
-  if (user) {
-    const { data: usage } = await supabase
-      .from("ai_usage")
-      .select("optimization_count")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    remainingOptimizations = Math.max(10 - (usage?.optimization_count ?? 0), 0);
-  }
+  
 
   return (
     <DashboardShell>
@@ -65,20 +56,24 @@ export default async function WorkspacePage({ params }: Props) {
             </div>
           </div>
 
-          {memoryBlocks.length !== 0 && (
+          {(memoryBlocks.data.length !== 0 && !hasSearch)&& (
             <div className="shrink-0">
               <CreateMemoryBlockDialog workspaceId={workspaceId} />
             </div>
           )}
         </div>
         {workspace.is_demo && <DemoWorkspaceBanner />}
-        {memoryBlocks.length === 0 ? (
+        {(memoryBlocks.data.length === 0 && !hasSearch)? (
           <MemoryEmptyState workspaceId={workspaceId} />
         ) : (
           <MemoryBlockList
+            key={q ?? ""}
             workspace={workspace}
-            blocks={memoryBlocks}
-            initialRemainingOptimizations={remainingOptimizations}
+            blocks={memoryBlocks.data}
+            // initialRemainingOptimizations={remainingOptimizations}
+            searchQuery={q}
+            hasMore={memoryBlocks.hasMore}
+            totalMemories={memoryBlocks.total}
           />
         )}
       </div>

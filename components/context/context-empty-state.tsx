@@ -1,7 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export function ContextEmptyState() {
+export function ContextEmptyState({workspaceId}: {workspaceId: string}) {
   return (
     <Card className="h-full border-zinc-800 bg-zinc-900/40">
       <CardContent className="flex h-full min-h-[300px] flex-col items-center justify-center px-6 text-center">
@@ -13,6 +15,12 @@ export function ContextEmptyState() {
           Contexts are generated from your project memories and can be saved for
           reuse across your AI workflow.
         </p>
+
+        <Button asChild className="mt-6">
+          <Link href={`/dashboard/workspaces/${workspaceId}/contexts/new`}>
+            Create Context
+          </Link>
+        </Button>
 
         <p className="mt-4 text-xs text-zinc-600">
           Your saved contexts will appear here.

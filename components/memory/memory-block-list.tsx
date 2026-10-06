@@ -1,96 +1,126 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MemoryBlock } from "@/types/memory-block";
 import { MemoryBlockCard } from "./memory-block-card";
-import { generateContext } from "@/lib/context-generator";
 import { Button } from "../ui/button";
-import { ContextPreview } from "../context/context-preview";
-import { ContextEmptyState } from "../context/context-empty-state";
+
 import { toast } from "sonner";
-import { optimizeContextAction } from "@/app/dashboard/actions/optimize-context";
-import { saveGeneratedContext } from "@/app/dashboard/actions/save-generated-context";
 import { Workspace } from "@/types/workspace";
-import { analytics } from "@/lib/analytics/events";
+import { Search } from "lucide-react";
+import { Input } from "../ui/input";
+import { useRouter } from "next/navigation";
+import { getMoreMemoryBlocks } from "@/app/dashboard/actions/get-more-memory-blocks";
+import { MemoryBlockSkeleton } from "./memory-block-skeleton";
 
 type Props = {
   blocks: MemoryBlock[];
   workspace: Workspace;
-  initialRemainingOptimizations: number;
+  searchQuery?: string;
+  hasMore: boolean;
+  totalMemories: number;
+
+  selectable?: boolean;
+  onSelectionChange?: (ids: Set<string>, memories: MemoryBlock[]) => void;
 };
 
 export function MemoryBlockList({
   blocks,
   workspace,
-  initialRemainingOptimizations,
+  searchQuery = "",
+  hasMore,
+  totalMemories,
+  selectable,
+  onSelectionChange
 }: Props) {
+  const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [generatedContext, setGeneratedContext] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [optimizing, setOptimizing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [contextTimestamp, setContextTimestamp] = useState<Date | null>(null);
-  const previewRef = useRef<HTMLDivElement | null>(null);
-  const [remainingOptimizations, setRemainingOptimizations] = useState<
-    number | null
-  >(initialRemainingOptimizations);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [search, setSearch] = useState(searchQuery);
+  const [loadedBlocks, setLoadedBlocks] = useState(blocks);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMoreBlocks, setHasMoreBlocks] = useState(hasMore);
 
-  function handleGenerate() {
-    const selectedBlocks = blocks.filter((block) => selectedIds.has(block.id));
-    const context = generateContext(workspace.name, selectedBlocks);
-    analytics.contextGenerated();
-    setGeneratedContext(context);
-    setContextTimestamp(new Date());
-    previewRef.current?.scrollIntoView({ behavior: "smooth" });
-  }
+  async function handleLoadMore() {
 
-  async function handleOptimize() {
-    try {
-      setOptimizing(true);
-      const { success, data, error, remaining } =
-        await optimizeContextAction(generatedContext);
-      if (!success) {
-        toast.error(error);
-        console.error(error);
-        return;
-      }
-      setGeneratedContext(data);
-
-      if (typeof remaining === "number") {
-        setRemainingOptimizations(remaining);
-      }
-
-      toast.success("Context optimized with AI");
-      analytics.aiOptimizeSuccess();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to optimize context");
-    } finally {
-      setOptimizing(false);
-      setContextTimestamp(new Date());
+    if (loadingMore || !hasMoreBlocks) {
+      return;
     }
-  }
 
-  async function handleSave() {
     try {
-      setSaving(true);
-      const { success, error } = await saveGeneratedContext(
+      setLoadingMore(true);
+
+      const nextPage = currentPage + 1;
+
+      const result = await getMoreMemoryBlocks(
         workspace.id,
-        generatedContext,
+        searchQuery,
+        nextPage,
       );
-      if (!success) {
-        toast.error(error);
-        console.error(error);
-        return;
-      }
-      setSaving(false);
-      toast.success("Context saved");
+
+      setLoadedBlocks((prev) => [...prev, ...result.data]);
+      setCurrentPage(nextPage);
+      setHasMoreBlocks(result.hasMore);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save context");
+      toast.error("Failed to load more memories");
     } finally {
-      setSaving(false);
+      setLoadingMore(false);
     }
   }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+
+      if (search.trim()) {
+        params.set("q", search.trim());
+      } else {
+        params.delete("q");
+      }
+
+      const query = params.toString();
+
+      router.push(query ? `?${query}` : window.location.pathname, {
+        scroll: false,
+      });
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [search, router]);
+
+  useEffect(() => {
+    const target = loadMoreRef.current;
+
+    if (!target || !hasMoreBlocks || loadingMore) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          handleLoadMore();
+        }
+      },
+      {
+        rootMargin: "300px"
+      }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    }
+
+  }, [hasMoreBlocks, loadingMore, currentPage, searchQuery]);
+
+  function notifySelection(next: Set<string>) {
+    const selectedMemories = loadedBlocks.filter(block => next.has(block.id));
+
+    onSelectionChange?.(next, selectedMemories);
+  }
+
 
   function handleSelect(blockId: string, checked: boolean) {
     setSelectedIds((prev) => {
@@ -102,114 +132,116 @@ export function MemoryBlockList({
         next.delete(blockId);
       }
 
+      notifySelection(next)
+
       return next;
     });
   }
 
-  async function handleCopy() {
-    if (!generatedContext) {
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(generatedContext);
-      setCopied(true);
-      toast.success("Context copied to clipboard");
-      analytics.contextCopied();
-      setTimeout(() => {
-        setCopied(false);
-      }, 2000);
-    } catch {
-      toast.error("Failed to copy context");
-    }
-  }
+  
 
   function handleSelectAll() {
-    setSelectedIds(new Set(blocks.map(block => block.id)));
+    const next = new Set(loadedBlocks.map(block => block.id));
+
+    setSelectedIds(next);
+    notifySelection(next)
   }
 
   function handleDeselect() {
-    setSelectedIds(new Set());
+    const next = new Set<string>();
+
+    setSelectedIds(next);
+    notifySelection(next);
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-zinc-500">
-          {blocks.length} {blocks.length === 1 ? "memory" : "memories"}
-        </div>
-
-        <div className='flex items-center gap-2'>
-          {selectedIds.size > 0 && (
-            <span className='text-sm text-zinc-500'>
-              {selectedIds.size} selected
-            </span>
-          )}
-
-          {selectedIds.size < blocks.length ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleSelectAll}
-            >
-              Select All
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleDeselect}
-            >
-              Clear All
-            </Button>
-          )}
-        </div>
-        {/* <div>
-          <Button
-            size="sm"
-            onClick={handleGenerate}
-            disabled={selectedIds.size === 0 || optimizing}
-          >
-            Generate Context
-          </Button>
-        </div> */}
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {blocks.map((block) => (
-          <MemoryBlockCard
-            key={block.id}
-            block={block}
-            selected={selectedIds.has(block.id)}
-            onSelect={handleSelect}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="relative w-full md:max-w-sm">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <Input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search memories..."
+            className="h-11 w-full rounded-xl border border-zinc-800 bg-zinc-900 pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700"
           />
-        ))}
-      </div>
-      <div ref={previewRef} className="mt-8 overflow-auto">
-        {generatedContext ? (
-          <ContextPreview
-            content={generatedContext}
-            onCopy={handleCopy}
-            copied={copied}
-            isLoading={optimizing}
-            onSave={handleSave}
-            saving={saving}
-            selectedCount={selectedIds.size}
-            lastUpdate={contextTimestamp}
-            remainingOptimizations={remainingOptimizations}
-            optimizeBtn={
-              <Button
-                size="sm"
-                onClick={handleOptimize}
-                disabled={!generatedContext || optimizing}
-              >
-                {optimizing ? "Optimizing" : "Optimize with AI"}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="text-sm text-zinc-500">
+            {totalMemories} {totalMemories === 1 ? "memory" : "memories"}
+          </div>
+
+          {selectable && (<div className="flex items-center gap-2">
+            {selectedIds.size > 0 && (
+              <span className="text-sm text-zinc-500">
+                {selectedIds.size} selected
+              </span>
+            )}
+
+            {selectedIds.size < loadedBlocks.length ? (
+              <Button variant="ghost" size="sm" onClick={handleSelectAll}>
+                Select All
               </Button>
-            }
-          />
-        ) : (
-          <ContextEmptyState />
-        )}
+            ) : (
+              <Button variant="ghost" size="sm" onClick={handleDeselect}>
+                Clear All
+              </Button>
+            )}
+          </div>)}
+        </div>
+        
       </div>
+      {loadedBlocks.length === 0 ? (
+        <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 px-6 text-center">
+          <Search className="h-8 w-8 text-zinc-600" />
+
+          <h3 className="mt-4 font-semibold text-zinc-300">
+            No memories found
+          </h3>
+
+          <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
+            No memories match{" "}
+            <span className="text-zinc-300">&quot;{searchQuery}&quot;</span>. Try a
+            different search.
+          </p>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-4"
+            onClick={() => {
+              setSearch("");
+            }}
+          >
+            Clear search
+          </Button>
+        </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {loadedBlocks.map((block) => (
+            <MemoryBlockCard
+              key={block.id}
+              block={block}
+              selected={selectedIds.has(block.id)}
+              onSelect={handleSelect}
+              selectable={selectable}
+            />
+          ))}
+        </div>
+      )}
+
+      {hasMoreBlocks && (
+        <div ref={loadMoreRef} className="p-4">
+          {loadingMore && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <MemoryBlockSkeleton />
+              <MemoryBlockSkeleton />
+            </div>
+          )}
+        </div>
+      )}
+      
     </div>
   );
 }

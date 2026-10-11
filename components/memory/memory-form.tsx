@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -10,13 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { MEMORY_CATEGORIES } from "@/lib/constants";
+import { MEMORY_CATEGORIES, MEMORY_TYPES } from "@/lib/constants";
 
 type Props = {
   initialValues?: {
     title: string;
     content: string;
     category: string;
+    memory_type: string;
   };
   submitText: string;
   isLoading: boolean;
@@ -30,11 +32,16 @@ export function MemoryForm({
   isLoading,
 }: Props) {
   const [category, setCategory] = useState(
-    initialValues?.category || "Development",
+    initialValues?.category || "Technical",
+  );
+
+  const [memoryType, setMemoryType] = useState(
+    initialValues?.memory_type || "Fact",
   );
 
   function handleSubmit(formData: FormData) {
     formData.set("category", category);
+    formData.set("memory_type", memoryType);
     onSubmit(formData);
   }
 
@@ -47,6 +54,7 @@ export function MemoryForm({
         >
           Memory title
         </label>
+
         <Input
           id="memory-title"
           defaultValue={initialValues?.title}
@@ -55,28 +63,57 @@ export function MemoryForm({
           className="h-12 rounded-xl border-zinc-800 bg-zinc-950 focus-visible:ring-1 focus-visible:ring-zinc-500"
         />
       </div>
+
       <div className="space-y-2">
+        <label className="text-sm font-medium text-zinc-300">Category</label>
+
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger>
-            <SelectValue />
+            <SelectValue placeholder="Select category" />
           </SelectTrigger>
 
           <SelectContent
             position="popper"
             className="z-50 border-zinc-800 bg-zinc-900 text-white"
           >
-            {MEMORY_CATEGORIES.map((cate) => (
+            {MEMORY_CATEGORIES.map((category) => (
               <SelectItem
-                key={cate}
+                key={category}
                 className="hover:bg-zinc-800/80"
-                value={cate}
+                value={category}
               >
-                {cate}
+                {category}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-zinc-300">Memory type</label>
+
+        <Select value={memoryType} onValueChange={setMemoryType}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select memory type" />
+          </SelectTrigger>
+
+          <SelectContent
+            position="popper"
+            className="z-50 border-zinc-800 bg-zinc-900 text-white"
+          >
+            {MEMORY_TYPES.map((type) => (
+              <SelectItem
+                key={type}
+                className="hover:bg-zinc-800/80"
+                value={type}
+              >
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="space-y-2">
         <label
           htmlFor="memory-content"
@@ -84,14 +121,16 @@ export function MemoryForm({
         >
           Memory content
         </label>
-      <Textarea
-        id="memory-content"
-        name="content"
-        defaultValue={initialValues?.content}
-        placeholder="Add the project knowledge your AI should remember..."
-        className="min-h-[180px] rounded-xl border-zinc-800 bg-zinc-950 focus-visible:ring-1 focus-visible:ring-zinc-500"
-      />
+
+        <Textarea
+          id="memory-content"
+          name="content"
+          defaultValue={initialValues?.content}
+          placeholder="Add the project knowledge your AI should remember..."
+          className="min-h-[180px] rounded-xl border-zinc-800 bg-zinc-950 focus-visible:ring-1 focus-visible:ring-zinc-500"
+        />
       </div>
+
       <Button
         type="submit"
         className="h-11 w-full rounded-xl bg-zinc-100 text-black hover:bg-white"

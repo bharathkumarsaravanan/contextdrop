@@ -30,7 +30,7 @@ export function MemoryBlockList({
   hasMore,
   totalMemories,
   selectable,
-  onSelectionChange
+  onSelectionChange,
 }: Props) {
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -42,7 +42,6 @@ export function MemoryBlockList({
   const [hasMoreBlocks, setHasMoreBlocks] = useState(hasMore);
 
   async function handleLoadMore() {
-
     if (loadingMore || !hasMoreBlocks) {
       return;
     }
@@ -103,24 +102,22 @@ export function MemoryBlockList({
         }
       },
       {
-        rootMargin: "300px"
-      }
+        rootMargin: "300px",
+      },
     );
 
     observer.observe(target);
 
     return () => {
       observer.disconnect();
-    }
-
+    };
   }, [hasMoreBlocks, loadingMore, currentPage, searchQuery]);
 
   function notifySelection(next: Set<string>) {
-    const selectedMemories = loadedBlocks.filter(block => next.has(block.id));
+    const selectedMemories = loadedBlocks.filter((block) => next.has(block.id));
 
     onSelectionChange?.(next, selectedMemories);
   }
-
 
   function handleSelect(blockId: string, checked: boolean) {
     setSelectedIds((prev) => {
@@ -132,19 +129,17 @@ export function MemoryBlockList({
         next.delete(blockId);
       }
 
-      notifySelection(next)
+      notifySelection(next);
 
       return next;
     });
   }
 
-  
-
   function handleSelectAll() {
-    const next = new Set(loadedBlocks.map(block => block.id));
+    const next = new Set(loadedBlocks.map((block) => block.id));
 
     setSelectedIds(next);
-    notifySelection(next)
+    notifySelection(next);
   }
 
   function handleDeselect() {
@@ -172,25 +167,26 @@ export function MemoryBlockList({
             {totalMemories} {totalMemories === 1 ? "memory" : "memories"}
           </div>
 
-          {selectable && (<div className="flex items-center gap-2">
-            {selectedIds.size > 0 && (
-              <span className="text-sm text-zinc-500">
-                {selectedIds.size} selected
-              </span>
-            )}
+          {selectable && (
+            <div className="flex items-center gap-2">
+              {selectedIds.size > 0 && (
+                <span className="text-sm text-zinc-500">
+                  {selectedIds.size} selected
+                </span>
+              )}
 
-            {selectedIds.size < loadedBlocks.length ? (
-              <Button variant="ghost" size="sm" onClick={handleSelectAll}>
-                Select All
-              </Button>
-            ) : (
-              <Button variant="ghost" size="sm" onClick={handleDeselect}>
-                Clear All
-              </Button>
-            )}
-          </div>)}
+              {selectedIds.size < loadedBlocks.length ? (
+                <Button variant="ghost" size="sm" onClick={handleSelectAll}>
+                  Select All
+                </Button>
+              ) : (
+                <Button variant="ghost" size="sm" onClick={handleDeselect}>
+                  Clear All
+                </Button>
+              )}
+            </div>
+          )}
         </div>
-        
       </div>
       {loadedBlocks.length === 0 ? (
         <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 px-6 text-center">
@@ -202,8 +198,8 @@ export function MemoryBlockList({
 
           <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
             No memories match{" "}
-            <span className="text-zinc-300">&quot;{searchQuery}&quot;</span>. Try a
-            different search.
+            <span className="text-zinc-300">&quot;{searchQuery}&quot;</span>.
+            Try a different search.
           </p>
 
           <Button
@@ -241,7 +237,6 @@ export function MemoryBlockList({
           )}
         </div>
       )}
-      
     </div>
   );
 }

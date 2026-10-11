@@ -15,7 +15,9 @@ export const demoMemoryBlocks: MemoryBlock[] = [
     content:
       "ContextDrop helps developers save reusable project knowledge and generate AI-ready context.",
     category: "Product",
+    memory_type: "Decision",
     created_at: "",
+    updated_at: ""
   },
   {
     id: "2",
@@ -24,7 +26,9 @@ export const demoMemoryBlocks: MemoryBlock[] = [
     content:
       "Developers, founders and product managers building AI-assisted workflows.",
     category: "Business",
+    memory_type: "Decision",
     created_at: "",
+    updated_at: ""
   },
   {
     id: "3",
@@ -33,7 +37,9 @@ export const demoMemoryBlocks: MemoryBlock[] = [
     content:
       "Next.js, TypeScript, Tailwind CSS, shadcn/ui, Supabase and OpenRouter.",
     category: "Development",
+    memory_type: "Decision",
     created_at: "",
+    updated_at: ""
   },
   {
     id: "4",
@@ -42,6 +48,8 @@ export const demoMemoryBlocks: MemoryBlock[] = [
     content:
       "Authentication, Workspaces, Context Generation, Sharing and AI Optimization.",
     category: "Planning",
+    memory_type: "Decision",
     created_at: "",
+    updated_at: ""
   },
 ];

@@ -8,6 +8,7 @@ export function generateContext(
         return(
 `## ${block.title}  
 Category: ${block.category}
+Memory Type: ${block.memory_type}
 
 ${block.content}`
         ) 

@@ -222,6 +222,62 @@ export default function CursorMcpPage() {
           </div>
         </section>
 
+        {/* Memory Instructions */}
+        <section className="mt-12">
+          <p className="text-sm font-medium uppercase tracking-wider text-primary">
+            Step 5
+          </p>
+
+          <h2 className="mt-2 text-2xl font-bold tracking-tight">
+            Configure Cursor for autonomous memory
+          </h2>
+
+          <p className="mt-3 text-sm leading-6 text-zinc-500">
+            ContextDrop can automatically preserve durable project knowledge
+            from your coding conversations. Add the following instruction to
+            your Cursor project rules or instructions.
+          </p>
+
+          <div className="mt-5 rounded-xl border border-zinc-800 bg-zinc-900/30 p-5">
+            <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+              Recommended instruction
+            </p>
+
+            <pre className="mt-4 overflow-x-auto whitespace-pre-wrap rounded-lg border border-zinc-800 bg-zinc-950 p-4 text-sm leading-6 text-zinc-300">
+              {`Use ContextDrop as the persistent memory layer for this project.
+
+During normal coding conversations, recognize durable project-specific knowledge and proactively preserve it in ContextDrop without waiting for me to explicitly ask you to save it.
+
+Use ContextDrop memory when you need existing project context, architectural decisions, requirements, constraints, conventions, preferences, workflows, or other durable project knowledge.
+
+When new durable knowledge is established:
+- Use save_memory when it should be added to project memory.
+- Search existing memory first when related knowledge may already exist.
+- If an existing memory has materially changed, use update_memory instead of creating a duplicate.
+- Ignore information that is temporary, speculative, casual, generic programming knowledge, one-off questions, temporary debugging details, intermediate reasoning, or short-lived tasks.
+- Never store secrets or credentials such as API keys, access tokens, refresh tokens, session cookies, database credentials, or signing/encryption keys.
+- Avoid creating duplicate memories.
+- Use the appropriate ContextDrop category and memory type.
+- Continue working on my actual coding request normally after managing memory.
+- Never claim that something was saved unless the ContextDrop tool call succeeds.
+
+ContextDrop owns persistent memory. Do not create a separate memory document or maintain a separate memory system.`}
+            </pre>
+          </div>
+
+          <div className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/20 p-5">
+            <p className="text-sm font-medium text-zinc-200">
+              Why this matters
+            </p>
+
+            <p className="mt-2 text-sm leading-6 text-zinc-500">
+              Cursor recognizes durable project knowledge from your coding
+              conversations, while ContextDrop handles persistent storage,
+              duplicate detection, and updating existing project knowledge.
+            </p>
+          </div>
+        </section>
+
         {/* Security */}
         <section className="mt-12 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 sm:p-8">
           <div className="flex items-start gap-4">

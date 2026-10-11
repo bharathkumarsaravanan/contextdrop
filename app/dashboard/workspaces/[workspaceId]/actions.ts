@@ -11,6 +11,7 @@ export async function createMemoryBlock(
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const category = formData.get("category") as string;
+    const memoryType = formData.get("memory_type") as string;
 
     if (!title.trim()) {
         return {
@@ -31,6 +32,7 @@ export async function createMemoryBlock(
         title,
         content,
         category, 
+        memory_type: memoryType
       });
 
     if (error) {
@@ -94,6 +96,7 @@ export async function updateMemory(workspaceId:string, memoryId: string, formDat
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const category = formData.get("category") as string;
+    const memoryType = formData.get("memory_type") as string;
 
     if (!title.trim()) {
         return {
@@ -112,7 +115,8 @@ export async function updateMemory(workspaceId:string, memoryId: string, formDat
       .update({
         title: title,
         category: category,
-        content: content
+        content: content,
+        memory_type: memoryType
       })
       .eq("id", memoryId)
       .eq("workspace_id", workspaceId);

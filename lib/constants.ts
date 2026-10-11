@@ -1,7 +1,23 @@
 export const MEMORY_CATEGORIES = [
-    "Development",
+    "Technical",
+    "Architecture",
+    "Product", 
+    "Security",
     "Business",
-    "Content", 
+    "Customer",
+    "Content",
+    "Operations",
     "Personal",
-    "Client"
-]
+];
+
+export const MEMORY_TYPES = [
+    "Fact",
+    "Definition",
+    "Decision",
+    "Constraint",
+    "Requirement",
+    "Convention",
+    "Preference",
+    "Workflow",
+    "Reference"
+];

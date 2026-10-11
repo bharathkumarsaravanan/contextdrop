@@ -180,7 +180,9 @@ export function CreateContextBuilder({
         />
       ) : (
         <MemoryBlockList
-          key={searchQuery ?? ""}
+          key={`${searchQuery ?? ""}-${blocks
+              .map((block) => `${block.id}-${block.updated_at}`)
+              .join(",")}`}
           workspace={workspace}
           blocks={blocks}
           searchQuery={searchQuery}

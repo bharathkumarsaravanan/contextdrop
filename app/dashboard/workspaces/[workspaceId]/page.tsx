@@ -56,21 +56,22 @@ export default async function WorkspacePage({ params, searchParams }: Props) {
             </div>
           </div>
 
-          {(memoryBlocks.data.length !== 0 && !hasSearch)&& (
+          {memoryBlocks.data.length !== 0 && !hasSearch && (
             <div className="shrink-0">
               <CreateMemoryBlockDialog workspaceId={workspaceId} />
             </div>
           )}
         </div>
         {workspace.is_demo && <DemoWorkspaceBanner />}
-        {(memoryBlocks.data.length === 0 && !hasSearch)? (
+        {memoryBlocks.data.length === 0 && !hasSearch ? (
           <MemoryEmptyState workspaceId={workspaceId} />
         ) : (
           <MemoryBlockList
-            key={q ?? ""}
+            key={`${q ?? ""}-${memoryBlocks.data
+              .map((block) => `${block.id}-${block.updated_at}`)
+              .join(",")}`}
             workspace={workspace}
             blocks={memoryBlocks.data}
-            // initialRemainingOptimizations={remainingOptimizations}
             searchQuery={q}
             hasMore={memoryBlocks.hasMore}
             totalMemories={memoryBlocks.total}

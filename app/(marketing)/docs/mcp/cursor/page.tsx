@@ -261,7 +261,21 @@ When new durable knowledge is established:
 - Continue working on my actual coding request normally after managing memory.
 - Never claim that something was saved unless the ContextDrop tool call succeeds.
 
-ContextDrop owns persistent memory. Do not create a separate memory document or maintain a separate memory system.`}
+ContextDrop owns persistent memory. Do not create a separate memory document or maintain a separate memory system.
+
+### Conversational Continuity
+
+Memory operations should remain unobtrusive and must not interrupt the user's workflow.
+
+When durable project knowledge is established:
+- Search existing memories and save or update knowledge when appropriate.
+- Continue the user's original task immediately after a successful operation.
+- Do not announce routine memory searches or successful saves.
+- Do not explain the memory-management process unless the user asks.
+- Do not ask unrelated follow-up questions merely because a memory was saved.
+- Never claim a save or update succeeded unless the tool confirms success.
+
+Mention memory operations only when the user asks, when clarification is necessary, or when a meaningful conflict, failure, or important decision requires the user's attention.`}
             </pre>
           </div>
 

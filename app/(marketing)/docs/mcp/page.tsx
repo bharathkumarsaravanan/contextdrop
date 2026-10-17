@@ -193,9 +193,9 @@ export default function McpDocsPage() {
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <ClientGuideCard
-              name="Cursor"
-              description="Connect ContextDrop to Cursor and give it access to your project memory."
-              href="/docs/mcp/cursor"
+              name="ChatGPT"
+              description="Connect ContextDrop to ChatGPT and give it access to your project memory."
+              href="/docs/mcp/chatgpt"
             />
 
             <ClientGuideCard
@@ -203,6 +203,20 @@ export default function McpDocsPage() {
               description="Connect ContextDrop to Claude and give it access to your project memory."
               href="/docs/mcp/claude"
             />
+
+            <ClientGuideCard
+              name="Gemini"
+              description="Connect ContextDrop to Gemini and give it access to your project memory."
+              href="/docs/mcp/gemini"
+            />
+
+            <ClientGuideCard
+              name="Cursor"
+              description="Connect ContextDrop to Cursor and give it access to your project memory."
+              href="/docs/mcp/cursor"
+            />
+
+            
           </div>
 
           <div className="mt-4 rounded-xl border border-dashed border-zinc-800 bg-zinc-900/20 p-5">

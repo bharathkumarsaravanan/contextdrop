@@ -32,7 +32,8 @@ type Props = {
 export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(activeWorkspaceId);
+  const [selectedWorkspaceId, setSelectedWorkspaceId] =
+    useState(activeWorkspaceId);
   const activeWorkspace = workspaces.find(
     (workspace) => workspace.id === activeWorkspaceId,
   );
@@ -40,8 +41,8 @@ export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
 
   function handleSelect(workspaceId: string) {
     if (workspaceId === activeWorkspaceId) {
-        setOpen(false);
-        return;
+      setOpen(false);
+      return;
     }
 
     const previousWorkspaceId = selectedWorkspaceId;
@@ -49,7 +50,6 @@ export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
     setSelectedWorkspaceId(workspaceId);
 
     setOpen(false);
-
 
     startTransition(async () => {
       const result = await setActiveMcpWorkspace(workspaceId);
@@ -75,7 +75,7 @@ export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
           <span className="truncate">
             {isPending
               ? "Saving..."
-              : activeWorkspace?.name ?? "Select a workspace"}
+              : (activeWorkspace?.name ?? "Select a workspace")}
           </span>
 
           {isPending ? (
@@ -85,14 +85,17 @@ export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+      <PopoverContent
+        className="w-[var(--radix-popover-trigger-width)] border border-zinc-700 bg-zinc-950 p-0 text-white shadow-xl"
+        align="start"
+      >
         <Command>
           <CommandInput
             placeholder="Search workspaces..."
             className="border-0 bg-transparent text-white outline-none ring-0 placeholder:text-zinc-500 focus:border-0 focus:outline-none focus:ring-0"
           />
 
-          <CommandList>
+          <CommandList className="max-h-60 overflow-y-auto">
             <CommandEmpty>No workspace found.</CommandEmpty>
 
             <CommandGroup>
@@ -101,11 +104,12 @@ export function McpWorkspaceSelector({ workspaces, activeWorkspaceId }: Props) {
                   key={workspace.id}
                   value={workspace.name}
                   onSelect={() => handleSelect(workspace.id)}
+                  className="cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800"
                 >
-                  {workspace.name}
+                  <span className="truncate">{workspace.name}</span>
 
                   <Check
-                    className={`ml-auto size-4 ${
+                    className={`ml-auto size-4 shrink-0 ${
                       workspace.id === activeWorkspaceId
                         ? "opacity-100"
                         : "opacity-0"

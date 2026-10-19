@@ -2,6 +2,7 @@
 import { optimizeContext } from "@/lib/ai/openrouter";
 import { createClient } from "@/lib/supabase/server";
 import { decryptValue } from "@/lib/ai/encryption";
+import { isProSubscription, type BillingSubscription } from "@/lib/billing/plans";
 
 export async function optimizeContextAction(context:string) {
     try {
@@ -16,6 +17,23 @@ export async function optimizeContextAction(context:string) {
                 error: "Unauthorized"
             }
         }
+
+        const { data: subscription, error: subscriptionError } = await supabase
+          .from("billing_subscriptions")
+          .select("status, current_period_end")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (subscriptionError) {
+            return {
+                success: false,
+                error: "Unable to check your plan"
+            };
+        }
+
+        const isPro = isProSubscription(
+          subscription as Pick<BillingSubscription, "status" | "current_period_end"> | null,
+        );
 
         let openRouterKey:string;
 
@@ -45,7 +63,9 @@ export async function optimizeContextAction(context:string) {
                 }
             }
         } else {
-            const { data: usageData, error: usageError } = await supabase.rpc("consume_free_optimization");
+            const { data: usageData, error: usageError } = isPro
+                ? await supabase.rpc("consume_pro_monthly_optimization")
+                : await supabase.rpc("consume_free_optimization");
             
             if (usageError) {
                 console.error("Usage error:", usageError);
@@ -61,7 +81,9 @@ export async function optimizeContextAction(context:string) {
             if(!usage?.allowed) {
                 return {
                     success: false,
-                    error: "You've used all included AI optimizations. Connect your OpenRouter API key to continue.",
+                    error: isPro
+                        ? "You've used all 100 included AI optimizations this month. Connect your OpenRouter API key to continue."
+                        : "You've used all included AI optimizations. Upgrade to ContextDrop Pro or connect your OpenRouter API key to continue.",
                     remaining: 0
                 }
             }  

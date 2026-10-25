@@ -8,6 +8,7 @@
   "services": [
     { "binding": "WORKER_SELF_REFERENCE", "service": "contextdrop" }
   ],
+  "previews": {},
   "observability": {
     "logs": {
       "enabled": true,

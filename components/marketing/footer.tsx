@@ -47,6 +47,13 @@ export function Footer() {
             </Link>
 
             <Link
+              href="/refund-policy"
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Refund Policy
+            </Link>
+
+            <Link
               href="/contact"
               className="text-sm text-muted-foreground hover:text-foreground"
             >

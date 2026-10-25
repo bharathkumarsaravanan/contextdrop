@@ -356,6 +356,61 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="pricing" className="container mx-auto px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">
+              Plans
+            </p>
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Start free. Upgrade when you need more.
+            </h2>
+            <p className="mt-5 text-lg text-muted-foreground">
+              Core features and supported AI clients are available on both plans.
+              Pro subscriptions renew monthly and can be canceled through Paddle.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
+            <Card className="border-zinc-800 bg-zinc-950/50">
+              <CardHeader>
+                <CardTitle className="text-2xl">Free</CardTitle>
+                <p className="text-3xl font-bold">$0</p>
+                <p className="text-sm text-muted-foreground">No subscription</p>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  <li>Up to 3 workspaces</li>
+                  <li>Up to 3 connected AI clients</li>
+                  <li>Up to 250 memory blocks</li>
+                  <li>10 included AI optimizations</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/50 bg-zinc-950/70">
+              <CardHeader>
+                <CardTitle className="text-2xl">ContextDrop Pro</CardTitle>
+                <p className="text-3xl font-bold">
+                  $9<span className="text-base font-normal text-muted-foreground">/month</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Billed monthly. Applicable taxes are shown at checkout.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  <li>Up to 25 workspaces</li>
+                  <li>Up to 10 connected AI clients</li>
+                  <li>Up to 2,000 memory blocks</li>
+                  <li>100 AI optimizations per month</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <section className="relative overflow-hidden px-6 py-32">
         {/* Ambient glow */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" />

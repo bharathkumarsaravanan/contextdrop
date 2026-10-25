@@ -16,6 +16,7 @@ export const PLAN_LIMITS = {
 } as const;
 
 export type PlanName = keyof typeof PLAN_LIMITS;
+export type PaddleEnvironment = "sandbox" | "live";
 
 export type BillingSubscription = {
   user_id: string;

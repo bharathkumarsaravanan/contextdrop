@@ -16,6 +16,7 @@ import { McpSettings } from "./mcp-settings";
 import { PlanSettings } from "./plan-settings";
 import { PLAN_LIMITS, isProSubscription, type BillingSubscription } from "@/lib/billing/plans";
 import { getMcpGrants } from "./actions";
+import { getPaddleEnvironment } from "@/lib/billing/paddle-config";
 
 
 export const metadata = {
@@ -89,7 +90,7 @@ export default async function ConfigPage() {
     memoryBlockCount = memories ?? 0;
 
     const grantsResult = await getMcpGrants();
-    aiClientCount = "grants" in grantsResult ? grantsResult.grants.length : 0;
+    aiClientCount = "grants" in grantsResult ? grantsResult.grants?.length ?? 0 : 0;
 
     hasApiKey = !!data;
   }
@@ -190,6 +191,7 @@ export default async function ConfigPage() {
               subscriptionStatus={subscription?.status ?? null}
               scheduledChangeAction={subscription?.scheduled_change_action ?? null}
               currentPeriodEnd={subscription?.current_period_end ?? null}
+              paddleEnvironment={getPaddleEnvironment()}
               usage={{
                 workspaces: workspaceCount,
                 aiClients: aiClientCount,

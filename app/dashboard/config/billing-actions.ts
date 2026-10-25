@@ -4,8 +4,7 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { canManageSubscription, isProSubscription, type BillingSubscription } from "@/lib/billing/plans";
-
-const PADDLE_API_URL = "https://sandbox-api.paddle.com";
+import { getPaddleApiConfig } from "@/lib/billing/paddle-config";
 
 type PaddleResponse<T> = {
   data?: T;
@@ -23,13 +22,9 @@ type PaddleResponse<T> = {
 };
 
 async function paddleRequest<T>(path: string, body: Record<string, unknown>) {
-  const apiKey = process.env.PADDLE_API_KEY;
+  const { apiKey, apiUrl } = getPaddleApiConfig();
 
-  if (!apiKey) {
-    throw new Error("Paddle Sandbox is not configured.");
-  }
-
-  const response = await fetch(`${PADDLE_API_URL}${path}`, {
+  const response = await fetch(`${apiUrl}${path}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,

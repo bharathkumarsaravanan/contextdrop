@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { canManageSubscription, PLAN_LIMITS, type PlanName } from "@/lib/billing/plans";
+import { canManageSubscription, PLAN_LIMITS, type PaddleEnvironment, type PlanName } from "@/lib/billing/plans";
 import { createPaddleCheckout, createPaddlePortalLink } from "./billing-actions";
 import { toast } from "sonner";
 
@@ -42,6 +42,7 @@ type Props = {
   subscriptionStatus: string | null;
   scheduledChangeAction: string | null;
   currentPeriodEnd: string | null;
+  paddleEnvironment: PaddleEnvironment;
   usage: {
     workspaces: number;
     aiClients: number;
@@ -55,6 +56,7 @@ export function PlanSettings({
   subscriptionStatus,
   scheduledChangeAction,
   currentPeriodEnd,
+  paddleEnvironment,
   usage,
 }: Props) {
   const [isPending, startTransition] = useTransition();
@@ -63,14 +65,18 @@ export function PlanSettings({
   const isPro = plan === "pro";
   const canManage = canManageSubscription(subscriptionStatus);
   const paddleClientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
+  const expectedTokenPrefix = paddleEnvironment === "sandbox" ? "test_" : "live_";
+  const hasValidClientToken = paddleClientToken?.startsWith(expectedTokenPrefix) ?? false;
 
   function handlePaddleReady() {
-    if (!paddleClientToken || !window.Paddle) {
+    if (!hasValidClientToken || !paddleClientToken || !window.Paddle) {
       return;
     }
 
     if (!paddleInitialized) {
-      window.Paddle.Environment.set("sandbox");
+      if (paddleEnvironment === "sandbox") {
+        window.Paddle.Environment.set("sandbox");
+      }
       window.Paddle.Initialize({
         token: paddleClientToken,
         eventCallback: (event) => {
@@ -182,15 +188,17 @@ export function PlanSettings({
               <Button onClick={handleUpgrade} disabled={isPending || !paddleReady}>
                 {isPending
                   ? "Opening..."
-                  : !paddleClientToken
+                  : !hasValidClientToken
                     ? "Checkout unavailable"
                     : paddleReady
                       ? "Upgrade to Pro"
                       : "Loading checkout..."}
               </Button>
-              {!paddleClientToken ? (
+              {!hasValidClientToken ? (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Add the Paddle Sandbox client token to enable checkout.
+                  {paddleEnvironment === "sandbox"
+                    ? "Add a Paddle Sandbox client token starting with test_ to enable checkout."
+                    : "Add a Paddle Live client token starting with live_ to enable checkout."}
                 </p>
               ) : null}
             </div>

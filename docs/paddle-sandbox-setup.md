@@ -13,7 +13,9 @@ Add these to the local `.env.local` file and to the server runtime when deployin
 - `SUPABASE_SERVICE_ROLE_KEY`: Supabase service-role key used only by the signed webhook handler.
 
 `PADDLE_API_KEY` is never read by browser code. The checkout action uses it to create a transaction with the signed-in ContextDrop user ID in Paddle custom data. The webhook verifies `Paddle-Signature` against the raw request body before updating subscription state.
-The settings page initializes Paddle.js with `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` and opens the transaction returned by the server action. Paddle requires a default payment link before creating transactions. In Sandbox, set it to the ContextDrop settings page that loads Paddle.js (for local development, `http://localhost:3000/dashboard/config` is supported).
+The settings page initializes Paddle.js with `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` and opens the transaction returned by the server action. Paddle requires a default payment link before creating transactions. Set the Sandbox default payment link to an approved ContextDrop website domain. Do not use the Hookdeck URL there; Hookdeck is only for webhook delivery. The local app opens checkout from the current page using the transaction ID.
+
+For the single ContextDrop Pro subscription, set the Sandbox price quantity minimum and maximum to `1`. Paddle may still show `Qty 1` in its hosted checkout or customer portal, but customers cannot change it.
 
 ## API key permissions
 

@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { approveAuth, denyAuth } from "./actions";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type ConsentActionsProps = {
     authorizationId: string;
@@ -15,8 +16,12 @@ export function ConsentActions({
 
     function handleApprove() {
         startTransition(async () => {
-            const result = await approveAuth(authorizationId);
-            window.location.assign(result.redirect_url);
+            try {
+                const result = await approveAuth(authorizationId);
+                window.location.assign(result.redirect_url);
+            } catch (error) {
+                toast.error(error instanceof Error ? error.message : "Unable to connect this AI client.");
+            }
         });
     }
 

@@ -224,9 +224,9 @@ export function PlanSettings({
             </thead>
             <tbody>
               <tr className="border-b"><td className="py-3 pr-4">Price</td><td className="py-3 pr-4">$0</td><td className="py-3">$9/month</td></tr>
-              <tr className="border-b"><td className="py-3 pr-4">Workspaces</td><td className="py-3 pr-4">Up to 3</td><td className="py-3">Up to 25</td></tr>
-              <tr className="border-b"><td className="py-3 pr-4">Connected AI clients</td><td className="py-3 pr-4">Up to 3</td><td className="py-3">Up to 10</td></tr>
-              <tr className="border-b"><td className="py-3 pr-4">Memory blocks</td><td className="py-3 pr-4">Up to 250</td><td className="py-3">Up to 2,000</td></tr>
+              <tr className="border-b"><td className="py-3 pr-4">Workspaces</td><td className="py-3 pr-4">1</td><td className="py-3">Up to 5</td></tr>
+              <tr className="border-b"><td className="py-3 pr-4">Connected AI clients</td><td className="py-3 pr-4">Up to 2</td><td className="py-3">Up to 5</td></tr>
+              <tr className="border-b"><td className="py-3 pr-4">Memory blocks</td><td className="py-3 pr-4">Up to 50</td><td className="py-3">Up to 500</td></tr>
               <tr><td className="py-3 pr-4">AI optimizations</td><td className="py-3 pr-4">10 included</td><td className="py-3">100/month</td></tr>
             </tbody>
           </table>

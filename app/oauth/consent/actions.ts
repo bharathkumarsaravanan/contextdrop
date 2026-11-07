@@ -36,7 +36,7 @@ export async function approveAuth(authorizationId: string) {
         throw new Error("Unable to check your plan.");
     }
 
-    const limit = isProSubscription(subscription) ? 10 : 3;
+    const limit = isProSubscription(subscription) ? 5 : 2;
     const alreadyConnected = grants.some(
         (grant) => grant.client.id === authorization.client.id,
     );

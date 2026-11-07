@@ -1,4 +1,11 @@
-import { Sparkles, Database, CheckSquare, FileText, Link2 } from "lucide-react";
+import {
+  Sparkles,
+  Database,
+  CheckSquare,
+  FileText,
+  Link2,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -8,14 +15,25 @@ import Link from "next/link";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 
+// NOTE: if your root layout.tsx also defines a description / OG tags that
+// mention ChatGPT or Gemini, update those too so everything says Cursor & Claude.
 export const metadata = {
-  title: "ContextDrop",
+  title: "ContextDrop — Persistent AI memory for Cursor & Claude",
+  description:
+    "Stop re-explaining your project to your AI. Save your architecture, decisions, and conventions once, and let Cursor and Claude remember them through MCP.",
+  openGraph: {
+    title: "ContextDrop — Persistent AI memory for Cursor & Claude",
+    description:
+      "Stop re-explaining your project to your AI. Save it once, and Cursor and Claude remember it in every session.",
+  },
 };
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Header />
+
+      {/* ───────────── HERO ───────────── */}
       <section className="container mx-auto px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Badge variant="secondary" className="mb-6">
@@ -23,26 +41,44 @@ export default function Home() {
             Persistent AI Memory for Cursor & Claude
           </Badge>
           <h1 className="max-w-4xl text-5xl font-bold tracking-tight sm:text-7xl">
-            Give Your AI a Persistent
-            <span className="block text-primary">Memory of Your Projects.</span>
+            Stop re-explaining your 
+            <span className="block text-primary">project to your AI.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-            Save your project knowledge once and let AI access it whenever you
-            need it. Connect Cursor or Claude through MCP and keep your
-            architecture, decisions, requirements, and conventions available
-            across your AI workflow.
+            Save your architecture, decisions, and conventions once. Cursor and
+            Claude remember them in every session — and your assistant can save
+            new decisions for you as you work.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-4">
+          <div className="mt-8 flex flex-wrap gap-4">
             <LoginBtn>
               <Button size="lg">Start Free</Button>
             </LoginBtn>
-            <Button variant="outline" asChild>
+            <Button size="lg" variant="outline" asChild>
               <Link href="/demo">View Demo</Link>
             </Button>
           </div>
-          <p className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground mt-10">
+          <p className="mt-4 text-sm text-muted-foreground">
+            Free plan available · Works with Cursor & Claude through MCP
+          </p>
+
+          <p className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground mt-16">
             See ContextDrop in Action
           </p>
+
+          {/*
+            TODO: replace this image with a 20–30 second demo video showing the
+            same task in two assistants (one forgets, one remembers). Example:
+
+            <video
+              src="/videos/demo.mp4"
+              poster="/images/landing/hero-memory-mcp.webp"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="mt-4 w-full rounded-xl border"
+            />
+          */}
           <Image
             src="/images/landing/hero-memory-mcp.webp"
             alt="ContextDrop workspace showing memory selection and AI-ready context generation"
@@ -51,9 +87,16 @@ export default function Home() {
             className="rounded-xl border mt-4"
             priority
           />
+
+          {/*
+            TODO (social proof): once you have real material, add a small strip
+            here — a screenshot of an assistant recalling a saved decision, or
+            an honest counter like "X memories saved". Only add real things.
+          */}
         </div>
       </section>
 
+      {/* ───────────── FEATURES ───────────── */}
       <section id="features" className="container mx-auto px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
@@ -85,7 +128,8 @@ export default function Home() {
               <CardContent>
                 <p className="leading-7 text-muted-foreground">
                   Store the knowledge your AI needs to understand your project —
-                  architecture, requirements, decisions, and conventions.
+                  architecture, requirements, decisions, and conventions. Add it
+                  yourself, or let your AI save it as you work.
                 </p>
               </CardContent>
             </Card>
@@ -147,6 +191,150 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ───────────── NEW: YOUR AI SAVES AS YOU WORK ───────────── */}
+      <section id="auto-save" className="container mx-auto px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">
+                Hands-free memory
+              </p>
+
+              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                No copy-pasting.
+                <span className="block text-muted-foreground">
+                  Your AI writes its own memory.
+                </span>
+              </h2>
+
+              <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
+                When you settle on a decision, your assistant can save it to
+                ContextDrop. When something changes, it updates the memory
+                instead of piling up duplicates. Next session, it already knows.
+              </p>
+            </div>
+
+            {/* Example conversation (illustrative) */}
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5 shadow-2xl">
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">Example</span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Cursor + ContextDrop
+                </span>
+              </div>
+
+              <div className="space-y-3 text-sm">
+                <div className="rounded-lg border border-zinc-800 p-3">
+                  <p className="text-xs text-muted-foreground">You</p>
+                  <p className="mt-1">
+                    Let&apos;s use Supabase RLS for tenant isolation.
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                  <p className="text-xs text-primary">Assistant</p>
+                  <p className="mt-1">
+                    Done. Saved to your project memory as a Decision.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 py-1">
+                  <div className="h-px flex-1 bg-zinc-800" />
+                  <span className="text-xs text-muted-foreground">
+                    Next day, new session
+                  </span>
+                  <div className="h-px flex-1 bg-zinc-800" />
+                </div>
+
+                <div className="rounded-lg border border-zinc-800 p-3">
+                  <p className="text-xs text-muted-foreground">You</p>
+                  <p className="mt-1">Add the invoices table.</p>
+                </div>
+
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                  <p className="text-xs text-primary">Assistant</p>
+                  <p className="mt-1">
+                    Adding it with RLS policies, following your tenant isolation
+                    decision.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── NEW: WHY NOT CLAUDE.md / .cursorrules ───────────── */}
+      <section id="compare" className="container mx-auto px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-3xl">
+            <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">
+              Compared to files
+            </p>
+
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Why not just use CLAUDE.md or .cursorrules?
+            </h2>
+
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+              Files are great for one repo and one tool. ContextDrop is for when
+              your project knowledge needs to follow you across assistants.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            <Card className="border-zinc-800 bg-zinc-950/50">
+              <CardHeader>
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900">
+                  <FileText className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <CardTitle className="text-xl">Rules files</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  <li>Live inside one repo</li>
+                  <li>Each tool wants its own file and format</li>
+                  <li>You edit and sync them by hand</li>
+                  <li>Drift out of date as the project changes</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/50 bg-zinc-950/70">
+              <CardHeader>
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900">
+                  <Link2 className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-xl">ContextDrop</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  {[
+                    "One memory shared by Cursor and Claude",
+                    "Lives in your account, so it follows you across machines",
+                    "Your AI reads and updates it directly through MCP",
+                    "Stays current as decisions change",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-sm text-muted-foreground">
+            Already have a CLAUDE.md? Keep it. ContextDrop works alongside it.
+          </p>
+        </div>
+      </section>
+
+      {/* ───────────── HOW IT WORKS ───────────── */}
       <section id="how-it-works" className="container mx-auto px-6 py-32">
         <div className="mx-auto max-w-6xl">
           {/* Header */}
@@ -278,7 +466,8 @@ export default function Home() {
 
                   <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">
                     Save architecture, requirements, decisions, conventions, and
-                    other project knowledge as reusable memories.
+                    other project knowledge as reusable memories — yourself, or
+                    let your AI save decisions as you make them.
                   </p>
                 </div>
               </div>
@@ -309,9 +498,15 @@ export default function Home() {
                 {/* MCP flow */}
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5 shadow-2xl">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between rounded-lg border border-zinc-800 p-3">
-                      <span className="text-sm">Cursor</span>
-                      <span className="text-xs text-primary">Connected</span>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex items-center justify-between rounded-lg border border-zinc-800 p-3">
+                        <span className="text-sm">Cursor</span>
+                        <span className="text-xs text-primary">Connected</span>
+                      </div>
+                      <div className="flex items-center justify-between rounded-lg border border-zinc-800 p-3">
+                        <span className="text-sm">Claude</span>
+                        <span className="text-xs text-primary">Connected</span>
+                      </div>
                     </div>
 
                     <div className="flex justify-center">
@@ -356,6 +551,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ───────────── PRICING ───────────── */}
       <section id="pricing" className="container mx-auto px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -380,11 +576,16 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 text-sm text-muted-foreground">
-                  <li>Up to 3 workspaces</li>
-                  <li>Up to 3 connected AI clients</li>
-                  <li>Up to 250 memory blocks</li>
+                  <li>1 workspace</li>
+                  <li>Up to 2 connected AI clients</li>
+                  <li>Up to 50 memory blocks</li>
                   <li>10 included AI optimizations</li>
                 </ul>
+                <div className="mt-6">
+                  <LoginBtn>
+                    <Button variant="outline">Start Free</Button>
+                  </LoginBtn>
+                </div>
               </CardContent>
             </Card>
 
@@ -400,17 +601,30 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 text-sm text-muted-foreground">
-                  <li>Up to 25 workspaces</li>
-                  <li>Up to 10 connected AI clients</li>
-                  <li>Up to 2,000 memory blocks</li>
+                  <li>Up to 5 workspaces</li>
+                  <li>Up to 5 connected AI clients</li>
+                  <li>Up to 500 memory blocks</li>
                   <li>100 AI optimizations per month</li>
                 </ul>
+                {/* TODO: point this at your upgrade/checkout flow if you have a direct link */}
+                <div className="mt-6">
+                  <LoginBtn>
+                    <Button>Get Started</Button>
+                  </LoginBtn>
+                </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* TODO: confirm this wording matches what an "AI optimization" actually does */}
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-muted-foreground">
+            AI optimizations: when ContextDrop uses AI to clean up and structure
+            your memories into AI-ready context.
+          </p>
         </div>
       </section>
 
+      {/* ───────────── FINAL CTA ───────────── */}
       <section className="relative overflow-hidden px-6 py-32">
         {/* Ambient glow */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" />
@@ -446,8 +660,8 @@ export default function Home() {
             </h2>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-              Set up your project memory once, connect your AI through MCP, and
-              keep your project knowledge available across your workflow.
+              Set up your project memory once, connect Cursor or Claude through
+              MCP, and stop re-explaining your project every session.
             </p>
 
             <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
